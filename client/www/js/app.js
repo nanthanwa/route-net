@@ -11,7 +11,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
   
 
   $stateProvider
-
+  .state('app', {
+    url: "/app",
+    abstract: true,
+    templateUrl: "templates/menu.html",
+  })
   .state('domain', {
     url: "/domain",
     templateUrl: "templates/domain.html"
