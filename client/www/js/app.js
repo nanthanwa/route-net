@@ -7,3 +7,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
     }
   });
 })
+.config(function($stateProvider, $urlRouterProvider) {
+  
+
+  $stateProvider
+
+  .state('domain', {
+    url: "/domain",
+    templateUrl: "templates/domain.html"
+  })
+  .state('map', {
+    url: "/map",
+    templateUrl: "templates/map.html"
+  })
+  $urlRouterProvider.otherwise("/domain");
+})

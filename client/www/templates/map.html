@@ -1,0 +1,19 @@
+<ion-view view-title="Map">
+
+<ion-content scroll="false">
+<map on-create="mapCreated(map)"></map>
+</ion-content>
+
+<ion-footer-bar class="bar">
+<label class="item item-input">
+  <span class="input-label">สายรถ</span>
+  <input type="text">
+</label>
+<div class="button button-icon icon ion-paper-airplane" ></div>
+<div class="button button-icon icon ion-arrow-left-a icon-right" ng-click="back()"></div>
+</ion-footer-bar>
+
+<ion-footer-bar class="bar-stable bar-subfooter">
+  <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
+</ion-footer-bar>
+</ion-view>
