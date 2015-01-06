@@ -30,4 +30,8 @@ angular.module('starter.controllers', [])
   $scope.goMap= function(){
     $location.path('/map');
   }
+
+  $scope.goDomain= function(){
+    $location.path('/domain');
+  }
 });
