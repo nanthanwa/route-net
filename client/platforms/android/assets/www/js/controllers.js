@@ -1,11 +1,26 @@
 angular.module('starter.controllers', [])
 
+
 .controller('MapCtrl', function($scope, $ionicLoading, $location) {
   $scope.mapCreated = function(map) {
     $scope.map = map;
   };
 
+  // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
 
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        var element = document.getElementById('deviceProperties');
+        element.innerHTML = 'Device Name: '     + device.name     + '<br />' +
+                            'Device Cordova: '  + device.cordova  + '<br />' +
+                            'Device Platform: ' + device.platform + '<br />' +
+                            'Device UUID: '     + device.uuid     + '<br />' +
+                            'Device Model: '    + device.model    + '<br />' +
+                            'Device Version: '  + device.version  + '<br />';
+    }
 
   $scope.centerOnMe = function () {
     console.log("Centering");
@@ -27,7 +42,7 @@ angular.module('starter.controllers', [])
     });
   };
 
-  
+
   //Controller for DOMAIN !!
   $scope.goMap= function(){
     $location.path('/map');
