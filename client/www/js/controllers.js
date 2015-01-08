@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
    $scope.domains.domaincar = false;
    $scope.domains.domainbus = false;
 
-
+   
     
   $scope.goMap= function(params){
     console.log("BUS :"+ params.domainbus)
@@ -58,9 +58,11 @@ angular.module('starter.controllers', [])
       console.log('Got pos', pos);
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
+
     }, function (error) {
       alert('Unable to get location: ' + error.message);
     });
+    
   };
 
 
