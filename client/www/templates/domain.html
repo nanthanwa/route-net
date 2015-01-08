@@ -1,13 +1,17 @@
 <ion-view view-title="Domain" ng-controller="DomainCtrl">
   <ion-header-bar class="bar-stable">
-  <button ng-click="goMap()">GO MAP</button>
+  <button ng-click="goMap(domains)">GO MAP</button>
   <h1 class="title">Domain</h1>
 </ion-header-bar>
 <ion-content scroll="false">
 <br>
- รถประจำทาง: <input type="checkbox" ng-model="domaincar"> <br/>
- รถทางไกล: <input type="checkbox" ng-model="domainbus"> <br/>
-=======
+<ion-checkbox ng-model="domains.domainbus">รถโดยสารประจำทาง</ion-checkbox>
+<ion-checkbox ng-model="domains.domaincar">รถโดยสารทางไกล</ion-checkbox>
+
+ <br>
+BUS =={{domains.domainbus}}<br>
+CAR =={{domains.domaincar}}<br>
+ ======
 	<p id="deviceProperties">Loading device properties...</p>
 
 </ion-content>

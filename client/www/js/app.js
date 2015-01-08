@@ -6,9 +6,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
       StatusBar.styleDefault();
     }
 
-    var device = ionic.Platform.device();
-    var uuid = device.uuid;
-    localStorage.setItem("uuid", uuid);
     
   });
   //console.log(device);

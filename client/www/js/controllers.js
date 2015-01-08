@@ -2,12 +2,15 @@ angular.module('starter.controllers', [])
 
 
 .controller('DomainCtrl', function($scope, $location){
-   $scope.domaincar = false;
-   $scope.domainbus = false;
+   $scope.domains={}
+   $scope.domains.domaincar = false;
+   $scope.domains.domainbus = false;
 
 
-  $scope.goMap= function(){
-
+    
+  $scope.goMap= function(params){
+    console.log("BUS :"+ params.domainbus)
+    console.log("CAR :"+ params.domaincar)
     $location.path('/map');
   }
 
@@ -17,6 +20,8 @@ angular.module('starter.controllers', [])
 
 
 .controller('MapCtrl', function($scope, $ionicLoading, $location) {
+
+  $scope.device = "";
 
   $scope.mapCreated = function(map) {
     $scope.map = map;
@@ -79,4 +84,5 @@ angular.module('starter.controllers', [])
                             'Device Model: '    + device.model    + '<br />' +
                             'Device Version: '  + device.version  + '<br />';
     }
+
 });
