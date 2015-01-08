@@ -5,6 +5,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    var device = ionic.Platform.device();
+    var uuid = device.uuid;
+    localStorage.setItem("uuid", uuid);
+    
   });
 })
 .config(function($stateProvider, $urlRouterProvider) {

@@ -1,6 +1,20 @@
 angular.module('starter.controllers', [])
 
+.controller('DomainCtrl', function($scope, $location){
+   $scope.domaincar = false;
+   $scope.domainbus = false;
+
+
+  $scope.goMap= function(){
+
+    $location.path('/map');
+  }
+
+
+
+})
 .controller('MapCtrl', function($scope, $ionicLoading, $location) {
+
   $scope.mapCreated = function(map) {
     $scope.map = map;
   };
@@ -25,13 +39,10 @@ angular.module('starter.controllers', [])
     });
   };
 
-
+  $scope.uuid = "UUID: "+localStorage.getItem("uuid");
   //Controller for DOMAIN !!
-  $scope.goMap= function(){
-    $location.path('/map');
-  }
-
   $scope.goDomain= function(){
     $location.path('/domain');
   }
+  
 });
