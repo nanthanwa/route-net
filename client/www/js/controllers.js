@@ -5,6 +5,8 @@ angular.module('starter.controllers', [])
     $scope.map = map;
   };
 
+
+
   $scope.centerOnMe = function () {
     console.log("Centering");
     if (!$scope.map) {
@@ -25,7 +27,7 @@ angular.module('starter.controllers', [])
     });
   };
 
-
+  
   //Controller for DOMAIN !!
   $scope.goMap= function(){
     $location.path('/map');

@@ -1,9 +1,11 @@
 angular.module('starter.controllers', [])
 
-.controller('MapCtrl', function($scope, $ionicLoading) {
+.controller('MapCtrl', function($scope, $ionicLoading, $location) {
   $scope.mapCreated = function(map) {
     $scope.map = map;
   };
+
+
 
   $scope.centerOnMe = function () {
     console.log("Centering");
@@ -24,4 +26,14 @@ angular.module('starter.controllers', [])
       alert('Unable to get location: ' + error.message);
     });
   };
+
+  
+  //Controller for DOMAIN !!
+  $scope.goMap= function(){
+    $location.path('/map');
+  }
+
+  $scope.goDomain= function(){
+    $location.path('/domain');
+  }
 });

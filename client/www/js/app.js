@@ -6,6 +6,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
       StatusBar.styleDefault();
     }
   });
+  //console.log(device);
+
+
 })
 .config(function($stateProvider, $urlRouterProvider) {
   

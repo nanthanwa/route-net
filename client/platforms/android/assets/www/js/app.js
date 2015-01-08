@@ -6,4 +6,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
       StatusBar.styleDefault();
     }
   });
+  //console.log(device);
+
+
+})
+.config(function($stateProvider, $urlRouterProvider) {
+  
+
+  $stateProvider
+  .state('app', {
+    url: "/app",
+    abstract: true,
+    templateUrl: "templates/menu.html",
+  })
+  .state('domain', {
+    url: "/domain",
+    templateUrl: "templates/domain.html"
+  })
+  .state('map', {
+    url: "/map",
+    templateUrl: "templates/map.html"
+  })
+  $urlRouterProvider.otherwise("/domain");
 })
