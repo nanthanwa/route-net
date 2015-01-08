@@ -11,6 +11,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
     localStorage.setItem("uuid", uuid);
     
   });
+  //console.log(device);
+
+
 })
 .config(function($stateProvider, $urlRouterProvider) {
   
