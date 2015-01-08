@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 
-.controller('DomainCtrl', function($scope, $location){
+.controller('DomainCtrl', function($scope, $location, DomainsService){
    $scope.domains={}
    $scope.domains.domaincar = false;
    $scope.domains.domainbus = false;
@@ -11,18 +11,21 @@ angular.module('starter.controllers', [])
   $scope.goMap= function(params){
     console.log("BUS :"+ params.domainbus)
     console.log("CAR :"+ params.domaincar)
+    DomainsService.set(params);
     $location.path('/map');
   }
-
-
 
 })
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $location) {
+
+.controller('MapCtrl', function($scope, $ionicLoading, $location, DomainsService) {
 
   $scope.device = "";
 
+
+  $scope.bus=DomainsService.get();
+  console.log($scope.bus);
   $scope.mapCreated = function(map) {
     $scope.map = map;
   };
@@ -62,12 +65,13 @@ angular.module('starter.controllers', [])
     }, function (error) {
       alert('Unable to get location: ' + error.message);
     });
-    
+
   };
 
 
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
+    console.log("kuy");
     $location.path('/domain');
   }
   
