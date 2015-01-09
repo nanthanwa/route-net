@@ -72,7 +72,7 @@ angular.module('starter.controllers', [])
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
 
-    
+    console.log("route-net : GODOMAIN");
 
     $location.path('/domain');
   }
