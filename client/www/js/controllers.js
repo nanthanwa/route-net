@@ -36,15 +36,17 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $location, DomainsService) {
+.controller('MapCtrl', function($scope, $ionicLoading, $location, DomainsService, LocationService) {
 
   $scope.device = "";
-  $scope.poss=""
+  $scope.myPosition="";
+  $scope.markers=LocationService.getAll();
 
   $scope.bus=DomainsService.get();
   console.log($scope.bus);
   $scope.mapCreated = function(map) {
     $scope.map = map;
+
   };
 
   
@@ -61,49 +63,50 @@ angular.module('starter.controllers', [])
 
     navigator.geolocation.getCurrentPosition(function (pos) {
       console.log('Got pos', pos);
-      $scope.poss=pos;
+      $scope.myPosition=pos;
+
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
       mymarker();
-      anothermarker();
+
     }, function (error) {
       alert('Unable to get location: ' + error.message);
     });
+  };
 
     //mark current location
     function mymarker(){
       new google.maps.Marker({
-        position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
+        position: new google.maps.LatLng($scope.myPosition.coords.latitude,$scope.myPosition.coords.longitude),
         map:$scope.map
       })
     }
 
     //mark another location
-    function anothermarker(){
-      new google.maps.Marker({
-        position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
-        map:$scope.map
-      })
-    }
+    function anothermarker(markers){
+      for(var i=0;i<markers.length;i++){       
+       new google.maps.Marker({
+        position: new google.maps.LatLng(markers[i].Location.latitude,markers[i].Location.longtitude),
+        map:$scope.map,
+        pin:"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+      });
+       console.log("marker"+(i+1)+"  "+markers[i].Location.latitude+","+markers[i].Location.longtitude);
+      }
+   }
 
-    function clearmarker(){
+   function clearmarker(){
 
-    }
-
-
-    $scope.ShareLocation = function(){
-      clearmarker();
-    }
+   }
 
 
-  };
+   $scope.ShareLocation = function(){
+    clearmarker();
+  }
 
 
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
-
     console.log("route-net : goDomain()");
-
     $location.path('/domain');
   }
 

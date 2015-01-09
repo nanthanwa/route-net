@@ -26,8 +26,8 @@ angular.module('starter.services', [])
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
-  var locations = [{Location:{latitude:20.1,logtitude:101.9}
-  },{Location:{latitude:40.1,logtitude:110.9}
+  var locations = [{Location:{latitude:20.1,longtitude:101.9}
+  },{Location:{latitude:40.1,longtitude:110.9}
 
   }]
 
