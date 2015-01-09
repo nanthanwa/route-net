@@ -68,6 +68,7 @@ angular.module('starter.controllers', [])
       alert('Unable to get location: ' + error.message);
     });
 
+
   };
 
 
