@@ -21,5 +21,20 @@ angular.module('starter.services', [])
       return wishs;
     }
   }
-});
+})
+.factory('LocationService', function() {
+  // Might use a resource here that returns a JSON array
 
+  // Some fake testing data
+  var locations = [{Location:{latitude:20.1,logtitude:101.9}
+  },{Location:{latitude:40.1,logtitude:110.9}
+
+  }]
+
+  return {
+    getAll: function() {
+      // Simple index lookup
+      return locations;
+    }
+  }
+});
