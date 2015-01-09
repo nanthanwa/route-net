@@ -26,10 +26,40 @@ angular.module('starter.services', [])
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
-  var locations = [{Location:{latitude:20.1,longtitude:101.9}
-  },{Location:{latitude:40.1,longtitude:110.9}
 
-  }]
+  var locations = [
+  {
+    Location:{domain: "bus", latitude:7.010568199999999, longitude: 100.48500}
+  },
+  {
+    Location:{domain: "bus", latitude:7.005368199999999, longitude:100.49500}
+  },
+  {
+    Location:{domain: "bus", latitude:7.008368199999999, longitude:100.50000}
+  },
+  {
+    Location:{domain: "bus", latitude:7.004368199999999, longitude:100.49000}
+  },
+  {
+    Location:{domain: "bus", latitude:7.007368199999999, longitude:100.49000}
+  },
+  {
+    Location:{domain: "tour", latitude:7.008068199999999, longitude: 100.48300}
+  },
+  {
+    Location:{domain: "tour", latitude:7.005368199999999, longitude:100.49300}
+  },
+  {
+    Location:{domain: "tour", latitude:7.012368199999999, longitude:100.50000}
+  },
+  {
+    Location:{domain: "tour", latitude:7.004368199999999, longitude:100.47000}
+  },
+  {
+    Location:{domain: "tour", latitude:7.007368199999999, longitude:100.48000}
+  }
+  ]
+
 
   return {
     getAll: function() {
