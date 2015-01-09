@@ -74,7 +74,8 @@ angular.module('starter.controllers', [])
     var mymarker = function(){
       new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
-        map:$scope.map
+        map:$scope.map,
+        icon: "http://maps.google.com/mapfiles/kml/shapes/road_shield3.png"
       })
       console.log($scope.poss.coords.latitude);
       console.log($scope.poss.coords.longitude);
