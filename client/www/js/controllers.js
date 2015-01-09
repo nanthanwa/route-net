@@ -71,7 +71,9 @@ angular.module('starter.controllers', [])
 
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
+
     console.log("olo");
+
     $location.path('/domain');
   }
   
