@@ -15,8 +15,6 @@ angular.module('starter.controllers', [])
   console.log("Bus :"+ params.domainbus)
   console.log("Tour :"+ params.domaintour)
   DomainsService.set(params);
-  // $scope.domainbus = $scope.domains.domainbus;
-  // $scope.domaintour = $scope.domains.domaintour;
   $location.path('/map');
 }
 
@@ -46,7 +44,7 @@ angular.module('starter.controllers', [])
   $scope.poss=""
 
   $scope.bus=DomainsService.get();
-  //console.log($scope.bus);
+  console.log($scope.bus);
   $scope.mapCreated = function(map) {
     $scope.map = map;
     anothermarker();

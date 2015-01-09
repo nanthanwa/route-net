@@ -2425,26 +2425,26 @@ window.ionic = {
 
   function preventGhostClick(e) {
 
-    console.debug((function(){
-      // Great for debugging, and thankfully this gets removed from the build, OMG it's ugly
+    // console.debug((function(){
+    //   // Great for debugging, and thankfully this gets removed from the build, OMG it's ugly
 
-      if(e.target.control) {
-        // this is a label that has an associated input
-        // the native layer will send the actual event, so stop this one
-        console.debug('preventGhostClick', 'label');
+    //   if(e.target.control) {
+    //     // this is a label that has an associated input
+    //     // the native layer will send the actual event, so stop this one
+    //     console.debug('preventGhostClick', 'label');
 
-      } else if(isRecentTap(e)) {
-        // a tap has already happened at these coordinates recently, ignore this event
-        console.debug('preventGhostClick', 'isRecentTap', e.target.tagName);
+    //   } else if(isRecentTap(e)) {
+    //     // a tap has already happened at these coordinates recently, ignore this event
+    //     console.debug('preventGhostClick', 'isRecentTap', e.target.tagName);
 
-      } else if(isScrolledSinceStart(e)) {
-        // this click's coordinates are different than its touchstart/mousedown, must have been scrolling
-        console.debug('preventGhostClick', 'isScrolledSinceStart, startCoordinates, x:' + startCoordinates.x + ' y:' + startCoordinates.y);
-      }
+    //   } else if(isScrolledSinceStart(e)) {
+    //     // this click's coordinates are different than its touchstart/mousedown, must have been scrolling
+    //     console.debug('preventGhostClick', 'isScrolledSinceStart, startCoordinates, x:' + startCoordinates.x + ' y:' + startCoordinates.y);
+    //   }
 
-      var c = getCoordinates(e);
-      return 'click at x:' + c.x + ', y:' + c.y;
-    })());
+    //   var c = getCoordinates(e);
+    //   return 'click at x:' + c.x + ', y:' + c.y;
+    // })());
 
 
     if(e.target.control || isRecentTap(e) || isScrolledSinceStart(e)) {
