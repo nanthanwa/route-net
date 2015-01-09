@@ -5,7 +5,7 @@ angular.module('starter.controllers', [])
  $scope.domains={}
  $scope.domains.domaincar = false;
  $scope.domains.domainbus = false;
-
+ //$scope.allLocation = [];
 
 
  $scope.goMap= function(params){
@@ -36,7 +36,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $location, DomainsService) {
+.controller('MapCtrl', function($scope, $ionicLoading, $location, DomainsService, LocationService) {
 
   $scope.device = "";
   $scope.poss=""
@@ -45,9 +45,9 @@ angular.module('starter.controllers', [])
   console.log($scope.bus);
   $scope.mapCreated = function(map) {
     $scope.map = map;
+    anothermarker();
   };
 
-  
   $scope.centerOnMe = function () {
     console.log("Centering");
     if (!$scope.map) {
@@ -65,26 +65,22 @@ angular.module('starter.controllers', [])
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
       mymarker();
-      anothermarker();
     }, function (error) {
       alert('Unable to get location: ' + error.message);
     });
 
+    
     //mark current location
-    function mymarker(){
+    var mymarker = function(){
       new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
         map:$scope.map
       })
+      console.log($scope.poss.coords.latitude);
+      console.log($scope.poss.coords.longitude);
     }
 
-    //mark another location
-    function anothermarker(){
-      new google.maps.Marker({
-        position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
-        map:$scope.map
-      })
-    }
+    
 
     function clearmarker(){
 
@@ -105,6 +101,30 @@ angular.module('starter.controllers', [])
     console.log("route-net : goDomain()");
 
     $location.path('/domain');
+  }
+
+  //mark another location
+    var anothermarker = function(){
+      console.log(LocationService.getAll()[0].Location.latitude);
+      console.log(LocationService.getAll()[0].Location.longitude);
+      console.log(LocationService.getAll().length);
+      var list = [];
+      for (var i = 0; i <LocationService.getAll().length ; i++) {
+        //console.log(LocationService.getAll()[i]);
+        list.push(LocationService.getAll()[i].Location);
+      }
+
+      for (var i = 0; i < list.length; i++) {
+        console.log(list[i].latitude, list[i].longitude);
+        mark(list[i].latitude,list[i].longitude);
+      }
+        
+      function mark(latitude, longitude){
+        new google.maps.Marker({
+          position: new google.maps.LatLng(latitude,longitude),
+          map:$scope.map
+        })
+      }
   }
 
 });
