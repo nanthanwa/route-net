@@ -1,20 +1,19 @@
-  <ion-header-bar class="bar-stable" ng-controller="MapCtrl">
-  <h1 class="title">Map</h1>
+<ion-view view-title="Map" ng-controller="MapCtrl">
+<h1 class="title">Map</h1>
     <button ng-click="goDomain()">Back To Domain</button>
 </ion-header-bar>
-<ion-view view-title="Map">
 
 <ion-content scroll="false">
 <map on-create="mapCreated(map)"></map>
 </ion-content>
 
 <ion-footer-bar class="bar-stable">
+<button ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></button>
 <label class="item item-input">
   <span class="input-label">สายรถ</span>
-  <input type="text">
+  <input type="text" size="15">
 </label>
-<button class="button button-icon icon ion-android-send" ></button>
-<a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
+<button class="button button-icon ion-android-share"></button> 
 </ion-footer-bar>
 
 </ion-view>
