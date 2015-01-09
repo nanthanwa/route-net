@@ -1,8 +1,8 @@
 <ion-view view-title="Map" ng-controller="MapCtrl">
   <ion-header-bar class="bar-stable" >
+  <button class="button" ng-click="goDomain()">Back To Domain</button>
   <h1 class="title">Map</h1>
-    <button ng-click="goDomain()">Back To Domain</button>
-</ion-header-bar>
+  </ion-header-bar>
 
 <ion-content scroll="false">
 <map on-create="mapCreated(map)"></map>
