@@ -73,6 +73,7 @@ angular.module('starter.controllers', [])
   $scope.goDomain= function(){
 
     console.log("olo");
+    console.log("route-net");
 
     $location.path('/domain');
   }
