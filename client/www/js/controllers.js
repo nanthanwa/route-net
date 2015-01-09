@@ -3,16 +3,20 @@ angular.module('starter.controllers', [])
 
 .controller('DomainCtrl', function($scope, $location, DomainsService){
  $scope.domains={}
- $scope.domains.domaincar = false;
  $scope.domains.domainbus = false;
- //$scope.allLocation = [];
+ $scope.domains.domaintour = false;
+ $scope.domainbus = null;
+ $scope.domaintour = null;
+  //$scope.allLocation = [];
 
 
  $scope.goMap= function(params){
   console.log("route-net : goMap()");
-  console.log("BUS :"+ params.domainbus)
-  console.log("CAR :"+ params.domaincar)
+  console.log("Bus :"+ params.domainbus)
+  console.log("Tour :"+ params.domaintour)
   DomainsService.set(params);
+  // $scope.domainbus = $scope.domains.domainbus;
+  // $scope.domaintour = $scope.domains.domaintour;
   $location.path('/map');
 }
 
@@ -42,7 +46,7 @@ angular.module('starter.controllers', [])
   $scope.poss=""
 
   $scope.bus=DomainsService.get();
-  console.log($scope.bus);
+  //console.log($scope.bus);
   $scope.mapCreated = function(map) {
     $scope.map = map;
     anothermarker();
@@ -60,7 +64,7 @@ angular.module('starter.controllers', [])
     });
 
     navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log('Got pos', pos);
+      //console.log('Got pos', pos);
       $scope.poss=pos;
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
@@ -71,23 +75,17 @@ angular.module('starter.controllers', [])
 
     
     //mark current location
-    var mymarker = function(){
+    function mymarker(){
       new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
         map:$scope.map,
-        icon: "http://maps.google.com/mapfiles/kml/shapes/road_shield3.png"
+        icon: "http://maps.google.com/mapfiles/kml/pal3/icon32.png"
       })
-      console.log($scope.poss.coords.latitude);
-      console.log($scope.poss.coords.longitude);
+      //console.log($scope.poss.coords.latitude);
+      //console.log($scope.poss.coords.longitude);
     }
 
     
-
-    function clearmarker(){
-
-    }
-
-
     $scope.ShareLocation = function(){
       clearmarker();
     }
@@ -99,16 +97,13 @@ angular.module('starter.controllers', [])
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
 
-    console.log("route-net : goDomain()");
+    //console.log("route-net : goDomain()");
 
     $location.path('/domain');
   }
 
   //mark another location
-    var anothermarker = function(){
-      console.log(LocationService.getAll()[0].Location.latitude);
-      console.log(LocationService.getAll()[0].Location.longitude);
-      console.log(LocationService.getAll().length);
+    function anothermarker(){
       var list = [];
       for (var i = 0; i <LocationService.getAll().length ; i++) {
         //console.log(LocationService.getAll()[i]);
@@ -116,16 +111,30 @@ angular.module('starter.controllers', [])
       }
 
       for (var i = 0; i < list.length; i++) {
-        console.log(list[i].latitude, list[i].longitude);
-        mark(list[i].latitude,list[i].longitude);
+        //console.log(list[i].domain, list[i].latitude, list[i].longitude);
+        mark(list[i].domain, list[i].latitude, list[i].longitude);
       }
         
-      function mark(latitude, longitude){
-        new google.maps.Marker({
-          position: new google.maps.LatLng(latitude,longitude),
-          map:$scope.map
-        })
+      function mark(domain, latitude, longitude){
+        if(domain === "bus"){
+          new google.maps.Marker({
+            position: new google.maps.LatLng(latitude,longitude),
+            map:$scope.map,
+            icon: "http://maps.google.com/mapfiles/kml/pal2/icon47.png"
+          })
+        }
+        else if(domain === "tour"){
+          new google.maps.Marker({
+            position: new google.maps.LatLng(latitude,longitude),
+            map:$scope.map,
+            icon: "http://maps.google.com/mapfiles/kml/pal4/icon62.png"
+          })
+        }
       }
   }
+
+  function clearmarker(){
+
+    }
 
 });
