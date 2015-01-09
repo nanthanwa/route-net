@@ -9,6 +9,7 @@ angular.module('starter.controllers', [])
    
     
   $scope.goMap= function(params){
+    console.log("route-net : goMap()");
     console.log("BUS :"+ params.domainbus)
     console.log("CAR :"+ params.domaincar)
     DomainsService.set(params);
@@ -72,7 +73,7 @@ angular.module('starter.controllers', [])
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
 
-    console.log("route-net : GODOMAIN");
+    console.log("route-net : goDomain()");
 
     $location.path('/domain');
   }
