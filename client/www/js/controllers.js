@@ -5,8 +5,6 @@ angular.module('starter.controllers', [])
  $scope.domains={}
  $scope.domains.domainbus = false;
  $scope.domains.domaintour = false;
- $scope.domainbus = null;
- $scope.domaintour = null;
   //$scope.allLocation = [];
 
 

@@ -4,8 +4,9 @@
   <button class="button button-positive" ng-click="goMap(domains)">GO MAP</button>
 </ion-header-bar>
 <ion-content>
-<ion-checkbox ng-model="domains.domainbus">รถโดยสารประจำทาง</ion-checkbox>
-<ion-checkbox ng-model="domains.domaintour">รถโดยสารทางไกล</ion-checkbox>
+<label><ion-checkbox ng-model="domains.domainbus">รถโดยสารประจำทาง </ion-checkbox></label>
+<label><ion-checkbox ng-model="domains.domaintour">รถโดยสารทางไกล  </ion-checkbox></label>
+
 	=====================<br>
 	Bus == {{domains.domainbus}}<br>
 	Tour == {{domains.domaintour}}<br>
