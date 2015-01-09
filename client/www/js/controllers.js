@@ -45,6 +45,8 @@ angular.module('starter.controllers', [])
   $scope.markers=LocationService.getAll();
 
   $scope.bus=DomainsService.get();
+
+
   console.log($scope.bus);
   $scope.mapCreated = function(map) {
     $scope.map = map;
@@ -123,14 +125,14 @@ angular.module('starter.controllers', [])
       }
         
       function mark(domain, latitude, longitude){
-        if(domain === "bus"){
+        if(domain === "bus" && ($scope.bus.domainbus==true)){
           new google.maps.Marker({
             position: new google.maps.LatLng(latitude,longitude),
             map:$scope.map,
             icon: "http://maps.google.com/mapfiles/kml/pal2/icon47.png"
           })
         }
-        else if(domain === "tour"){
+        else if(domain === "tour" &&($scope.bus.domaintour==true)){
           new google.maps.Marker({
             position: new google.maps.LatLng(latitude,longitude),
             map:$scope.map,
