@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
 
     navigator.geolocation.getCurrentPosition(function (pos) {
 
-      //console.log('Got pos', pos);
+      console.log('Got pos', pos);
       $scope.poss=pos;
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
