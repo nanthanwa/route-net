@@ -1,6 +1,8 @@
 var express = require('express');
 var mongojs = require('mongojs');
 var bodyParser = require('body-parser');
+var Sync = require('sync');
+	
 var app = express();
 var http = require('http').Server(app);
 var port = 3000;
