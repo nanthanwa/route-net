@@ -12,28 +12,38 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 
-
-
 http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
 })
 
 
-app.get('/api/allNode',function(reg,res){      //sent data from server to app.js (pass docs) 
+app.get('/api/allNode',function(req,res){      //sent data from server to app.js (pass docs) 
 	db.node.find({},function(err,node){   //query database
-           res.send(node); 
-      });  
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+		res.send(node); 
+	});  
+
 });     
 
-app.get('/api/allMaster',function(reg,res){      //sent data from server to app.js (pass docs) 
+app.get('/api/allMaster',function(req,res){      //sent data from server to app.js (pass docs) 
 	db.master.find({},function(err,master){   //query database
-           res.send(master); 
-      });  
+		res.send(master); 
+	});  	
 });     		
 
 
-app.get('/api/allPos',function(reg,res){      //sent data from server to app.js (pass docs) 
+app.get('/api/allPos',function(req,res){      //sent data from server to app.js (pass docs) 
 	db.pos.find({},function(err,pos){   //query database
-           res.send(pos); 
-      });  
-});     	
+		res.send(pos); 
+	});  
+});
+
+
+
+function findByDID(DID){
+	db.master.find({DID:DID},function(err,master){
+		res.send(master)
+	});
+}
+

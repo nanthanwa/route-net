@@ -36,7 +36,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $location, DomainsService, LocationService) {
+.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, DomainsService, LocationService) {
 
   $scope.device = "";
   $scope.myPosition="";
@@ -96,10 +96,16 @@ angular.module('starter.controllers', [])
 
 
    $scope.ShareLocation = function(){
-    clearmarker();
-    var date = new Date($scope.poss.timestamp);
+
+  /*  var date = new Date($scope.poss.timestamp);
     $scope.bdatetime = date;
-    console.log($scope.bdatetime);
+    console.log($scope.bdatetime);*/
+
+    $http.get('http://localhost:3000/api/allNode').success(function(data){
+        $scope.node = data;
+        console.log(data);
+        
+      })
   }
 
 
