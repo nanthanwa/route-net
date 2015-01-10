@@ -41,10 +41,9 @@ angular.module('starter.controllers', [])
   $scope.device = "";
   $scope.myPosition="";
   $scope.markers=LocationService.getAll();
-  $scope.poss;
 
   $scope.bus=DomainsService.get();
-
+  //$scope.poss = null;
 
   console.log($scope.bus);
   $scope.mapCreated = function(map) {
@@ -66,17 +65,20 @@ angular.module('starter.controllers', [])
 
     navigator.geolocation.getCurrentPosition(function (pos) {
 
-      console.log('Got pos', pos);
-      
-      $scope.poss=pos;
+      //console.log('Got pos', pos);
+      $scope.poss = pos;
+      //console.log($scope.poss)
+
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
+      console.log(pos.timestamp);
       mymarker();
-
     }, function (error) {
       alert('Unable to get location: ' + error.message);
     });
-  };
+        //end getCurrentPosition
+
+  }; //end centerOnMe
 
     
     //mark current location
