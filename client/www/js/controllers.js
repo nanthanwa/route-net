@@ -41,6 +41,7 @@ angular.module('starter.controllers', [])
   $scope.device = "";
   $scope.myPosition="";
   $scope.markers=LocationService.getAll();
+  $scope.poss;
 
   $scope.bus=DomainsService.get();
 
@@ -66,6 +67,7 @@ angular.module('starter.controllers', [])
     navigator.geolocation.getCurrentPosition(function (pos) {
 
       console.log('Got pos', pos);
+      
       $scope.poss=pos;
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
@@ -90,15 +92,12 @@ angular.module('starter.controllers', [])
     }
 
 
-    
-    $scope.ShareLocation = function(){
-      clearmarker();
-    }
-
-
 
    $scope.ShareLocation = function(){
     clearmarker();
+    var date = new Date($scope.poss.timestamp);
+    $scope.bdatetime = date;
+    console.log($scope.bdatetime);
   }
 
 
