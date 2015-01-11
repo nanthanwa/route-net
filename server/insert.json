@@ -1,0 +1,74 @@
+/* 0 */
+{
+  "_id" : ObjectId("54b21953ba0afa4134d03fa8"),
+  "UUID" : "f6a0fd1452f8f497",
+  "timestamp" : "1420956967503",
+  "location" : {
+    "latitude" : 7.0053681999999986,
+    "longitude" : 100.495
+  },
+  "domain" : {
+    "bus" : "A43",
+    "car" : null
+  }
+}
+
+/* 1 */
+{
+  "_id" : ObjectId("54b21963ba0afa4134d03fa9"),
+  "UUID" : "f6a0fd1452f8f737",
+  "timestamp" : "1420956961593",
+  "location" : {
+    "latitude" : 7.0083681999999987,
+    "longitude" : 100.5
+  },
+  "domain" : {
+    "bus" : "A87",
+    "car" : null
+  }
+}
+
+/* 2 */
+{
+  "_id" : ObjectId("54b21975ba0afa4134d03faa"),
+  "UUID" : "f6a0fd145288f427",
+  "timestamp" : "1420956967701",
+  "location" : {
+    "latitude" : 7.0043681999999992,
+    "longitude" : 100.49
+  },
+  "domain" : {
+    "bus" : "A72",
+    "car" : null
+  }
+}
+
+/* 3 */
+{
+  "_id" : ObjectId("54b2198aba0afa4134d03fab"),
+  "UUID" : "f6a0fd1452a8f407",
+  "timestamp" : "1420956967000",
+  "location" : {
+    "latitude" : 7.0073681999999993,
+    "longitude" : 100.49
+  },
+  "domain" : {
+    "bus" : "A80",
+    "car" : null
+  }
+}
+
+/* 4 */
+{
+  "_id" : ObjectId("54b219d0ba0afa4134d03fac"),
+  "UUID" : "f6a0fd1452f8f497",
+  "timestamp" : "1420956967203",
+  "location" : {
+    "latitude" : 7.0105681999999989,
+    "longitude" : 100.485
+  },
+  "domain" : {
+    "bus" : "A92",
+    "car" : null
+  }
+}
