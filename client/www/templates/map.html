@@ -1,7 +1,6 @@
 <ion-view view-title="Map" ng-controller="MapCtrl">
   <ion-header-bar class="bar-stable" >
   <button class="button ion-chevron-left button-positive" ng-click="goDomain()">  Back</button>
-  {{poss.timestamp | date:'yyyy-MM-dd HH:mm:ss'}} 
   <h1 class="title">Map</h1>
 
   </ion-header-bar>
@@ -16,9 +15,8 @@
 <label class="item item-input">
   <input type="text" placeholder="แชร์สายรถโดยสาร" size="20" ng-model="transportRoute" >
 </label>
-
-<button class="button button-icon ion-android-share" ng-click="shareLocation()"></button> 
-
+<!-- <button class="button button-icon ion-android-share" ng-click="shareLocation()"></button> -->
+<button class="button button-icon ion-android-share" ng-click="shareLocation()"></button>
 </ion-footer-bar>
 
 </ion-view>

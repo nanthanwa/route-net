@@ -35,7 +35,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, DomainsService, LocationService) {
+.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, $ionicActionSheet, $timeout, DomainsService, LocationService) {
 
   $scope.device = "";
   $scope.myPosition="";
@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
   $scope.bus=DomainsService.get();
   //$scope.poss = null;
 
-  console.log($scope.bus);
+  //console.log($scope.bus);
 
 
   $scope.mapCreated = function(map) {
@@ -74,7 +74,7 @@ angular.module('starter.controllers', [])
 
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
       $scope.loading.hide();
-      console.log(pos.timestamp);
+      //console.log(pos.timestamp);
       mymarker();
     }, function (error) {
       alert('Unable to get location: ' + error.message);
@@ -99,19 +99,41 @@ angular.module('starter.controllers', [])
     $scope.transportRoute = "";
 
     $scope.shareLocation = function(){
+      //Create Globally unique identifier for google chrome
+      var guid = (function() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+                   .toString(16)
+                   .substring(1);
+      }
+      return function() {
+        return s4() + s4() + '' + s4() + '' + s4()
+      };
+      })();
 
-      // var date = new Date($scope.poss.timestamp);
-      // $scope.bdatetime = date;
-      // console.log($scope.bdatetime);
-      console.log($scope.poss);
+      var uuid = guid();
+      
+      console.log(uuid);
+
+      show();
+
+      //alert($scope.transportRoute+"<br>"+$scope.poss.timestamp+"<br>"+$scope.poss.coords.latitude+"<br>"+$scope.poss.coords.longitude);
+      //alert(msg.setText(Html.fromHtml("<u>Message</u>")));
+      //console.log($scope.poss);
       $http.post('http://localhost:3000/api/shareNode',{
-        transportRoute: $scope.transportRoute,
+        UUID: uuid,
         timestamp: $scope.poss.timestamp,
-        latitude: $scope.poss.coords.latitude,
-        longitude: $scope.poss.coords.longitude
+        location:{
+          latitude: $scope.poss.coords.latitude,
+          longitude: $scope.poss.coords.longitude
+        },
+        domain: {
+          bus : $scope.transportRoute
+        }
       })
       .success(function(data, status, headers, config){
-
+        //console.log(data.timestamp);
+        //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
       })
       .error(function(data, status, headers, config) {
 
@@ -191,4 +213,27 @@ angular.module('starter.controllers', [])
       });
     }
 
-});
+    // Triggered on a button click, or some other target
+    function show() {
+
+     // Show the action sheet
+     var hideSheet = $ionicActionSheet.show({
+       buttons: [
+         { text: 'Bus' },
+         { text: 'Tour' }
+       ],
+       titleText: 'Select Domain',
+       cancelText: 'Cancel',
+       cancel: function() {
+            // add cancel code..
+          },
+       buttonClicked: function(index) {
+         return true;
+       }
+     });
+
+  };
+
+})
+
+
