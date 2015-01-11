@@ -9,8 +9,14 @@ var port = 3000;
 var db = mongojs('node',['master','node','pos']);
 
 app.use(express.static(__dirname + '/public'));
+
 app.use(bodyParser.json());
 
+app.options('/posts', function(req, res){
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  	res.end('');
+});
 
 http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
@@ -19,12 +25,13 @@ http.listen(port, function () {
 
 app.get('/api/allNode',function(req,res){      //sent data from server to app.js (pass docs) 
 	db.node.find({},function(err,node){   //query database
-		res.setHeader('Access-Control-Allow-Origin', '*');
-		res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-		res.send(node); 
-	});  
+		res.send(node);
+	});
+});    
 
-});     
+app.post('/api/allNode', function(req, res){
+	console.log(req.body);
+}); 
 
 app.get('/api/allMaster',function(req,res){      //sent data from server to app.js (pass docs) 
 	db.master.find({},function(err,master){   //query database

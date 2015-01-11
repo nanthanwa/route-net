@@ -101,10 +101,9 @@ angular.module('starter.controllers', [])
     $scope.bdatetime = date;
     console.log($scope.bdatetime);*/
 
-    $http.get('http://localhost:3000/api/allNode').success(function(data){
-        $scope.node = data;
-        console.log(data);
-        
+    $http.get('/api/allNode').success(function(data){
+        // $scope.node = data;
+        // console.log(data);
       })
   }
 
