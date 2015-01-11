@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.options('/posts', function(req, res){
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type','application/json');
   	res.end('');
 });
 
@@ -51,7 +51,9 @@ app.get('/api/allPos',function(req,res){      //sent data from server to app.js 
 app.get('/api/nodeByDomain',function(req,res){      //sent data from server to app.js (pass docs) 
 	//console.log(req);
 	db.node.find({},function(err,node){   //query database		
+
 			res.send(node); 
+
 	});  
 });
 
