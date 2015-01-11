@@ -12,11 +12,12 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.json());
 
-app.options('/posts', function(req, res){
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type','application/json');
-  	res.end('');
+
+app.all('/*', function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "http://localhost:8100");
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+	next();
 });
 
 http.listen(port, function () {
@@ -66,10 +67,14 @@ app.get('/api/nodeMark',function(req,res){
 
 app.post('/api/saveNode',function(req,res){
 	console.log(req.body)
+
 });
 
 
-
+app.post('/api/shareNode',function(req,res){
+	console.log(req.body);
+	
+});
 
 function findByDID(DID){
 	db.master.find({DID:DID},function(err,master){

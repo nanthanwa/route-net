@@ -96,15 +96,26 @@ angular.module('starter.controllers', [])
       //console.log($scope.poss.coords.longitude);
     }
 
+    $scope.transportRoute = "";
 
-
-    $scope.ShareLocation = function(){
+    $scope.shareLocation = function(){
 
       // var date = new Date($scope.poss.timestamp);
       // $scope.bdatetime = date;
       // console.log($scope.bdatetime);
       console.log($scope.poss);
+      $http.post('http://localhost:3000/api/shareNode',{
+        transportRoute: $scope.transportRoute,
+        timestamp: $scope.poss.timestamp,
+        latitude: $scope.poss.coords.latitude,
+        longitude: $scope.poss.coords.longitude
+      })
+      .success(function(data, status, headers, config){
 
+      })
+      .error(function(data, status, headers, config) {
+
+      });
 
   }
 
@@ -171,9 +182,13 @@ angular.module('starter.controllers', [])
     function saveNode(){
       $scope.testsend={id:"5",name:"wor"};
       console.log($scope.testsend);
-      $http.post('http://localhost:3000/api/saveNode',$scope.testsend).success(function(data){
+      $http.post('http://localhost:3000/api/saveNode',$scope.testsend)
+      .success(function(data, status, headers, config){
 
       })
+      .error(function(data, status, headers, config) {
+
+      });
     }
 
 });
