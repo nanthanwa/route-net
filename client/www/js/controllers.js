@@ -7,7 +7,7 @@ angular.module('starter.controllers', [])
  $scope.domains.domaintour = false;
   //$scope.allLocation = [];
 
-  saveNode();
+  //saveNode();
   $scope.goMap= function(params){
     console.log("route-net : goMap()");
     console.log("Bus :"+ params.domainbus)
@@ -47,13 +47,15 @@ angular.module('starter.controllers', [])
   //$scope.poss = null;
 
   console.log($scope.bus);
+
+
   $scope.mapCreated = function(map) {
     $scope.map = map;
     anothermarker();
-
+    centerOnMe()
   };
 
-  $scope.centerOnMe = function () {
+  function centerOnMe() {
     console.log("Centering");
     if (!$scope.map) {
       return;
@@ -98,16 +100,11 @@ angular.module('starter.controllers', [])
 
     $scope.ShareLocation = function(){
 
-  /*  var date = new Date($scope.poss.timestamp);
-    $scope.bdatetime = date;
-    console.log($scope.bdatetime);*/
+      // var date = new Date($scope.poss.timestamp);
+      // $scope.bdatetime = date;
+      // console.log($scope.bdatetime);
+      console.log($scope.poss);
 
-    $http.get('/api/allNode').success(function(data){
-        // $scope.node = data;
-        // console.log(data);
-      })
-
-    getNodeMark();
 
   }
 
@@ -115,7 +112,6 @@ angular.module('starter.controllers', [])
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
     //console.log("route-net : goDomain()");
-
     $location.path('/domain');
   }
 
