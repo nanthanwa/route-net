@@ -7,7 +7,7 @@ angular.module('starter.controllers', [])
  $scope.domains.domaintour = false;
   //$scope.allLocation = [];
 
-  saveNode();
+
   $scope.goMap= function(params){
     console.log("route-net : goMap()");
     console.log("Bus :"+ params.domainbus)
@@ -50,10 +50,10 @@ angular.module('starter.controllers', [])
   $scope.mapCreated = function(map) {
     $scope.map = map;
     anothermarker();
-
+    centerOnMe();
   };
 
-  $scope.centerOnMe = function () {
+  function centerOnMe() {
     console.log("Centering");
     if (!$scope.map) {
       return;
@@ -101,13 +101,6 @@ angular.module('starter.controllers', [])
   /*  var date = new Date($scope.poss.timestamp);
     $scope.bdatetime = date;
     console.log($scope.bdatetime);*/
-
-    $http.get('/api/allNode').success(function(data){
-        // $scope.node = data;
-        // console.log(data);
-      })
-
-    getNodeMark();
 
   }
 
