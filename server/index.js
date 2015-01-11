@@ -47,6 +47,30 @@ app.get('/api/allPos',function(req,res){      //sent data from server to app.js 
 });
 
 
+app.get('/api/nodeByDomain',function(req,res){      //sent data from server to app.js (pass docs) 
+	console.log(req);
+
+	db.node.find({},function(err,node){   //query database		
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+		res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type','application/json');
+		res.send(node); 
+	});  
+});
+
+
+app.get('/api/nodeMark',function(req,res){
+
+});
+
+
+
+app.post('/api/saveNode',function(req,res){
+	console.log(req.body)
+});
+
+
+
 
 function findByDID(DID){
 	db.master.find({DID:DID},function(err,master){
