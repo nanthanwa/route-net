@@ -172,6 +172,7 @@ angular.module('starter.controllers', [])
         $scope.node = data;
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log("UUID:"+$scope.node[i].UUID+"  TIMESTAMP:"+$scope.node[i].timestamp + "   BUS"+$scope.node[i].domain.bus);
+          console.log($scope.node[i].domain);
          mark("bus",$scope.node[i].location.latitude,$scope.node[i].location.longitude);                
         }      
       })
