@@ -7,14 +7,14 @@ angular.module('starter.controllers', [])
  $scope.domains.domaintour = false;
   //$scope.allLocation = [];
 
-
- $scope.goMap= function(params){
-  console.log("route-net : goMap()");
-  console.log("Bus :"+ params.domainbus)
-  console.log("Tour :"+ params.domaintour)
-  DomainsService.set(params);
-  $location.path('/map');
-}
+  saveNode();
+  $scope.goMap= function(params){
+    console.log("route-net : goMap()");
+    console.log("Bus :"+ params.domainbus)
+    console.log("Tour :"+ params.domaintour)
+    DomainsService.set(params);
+    $location.path('/map');
+  }
 
   // Wait for device API libraries to load
     //
@@ -41,6 +41,7 @@ angular.module('starter.controllers', [])
   $scope.device = "";
   $scope.myPosition="";
   $scope.markers=LocationService.getAll();
+ 
 
   $scope.bus=DomainsService.get();
   //$scope.poss = null;
@@ -80,7 +81,7 @@ angular.module('starter.controllers', [])
 
   }; //end centerOnMe
 
-    
+
     //mark current location
     function mymarker(){
       new google.maps.Marker({
@@ -95,17 +96,12 @@ angular.module('starter.controllers', [])
 
 
 
-   $scope.ShareLocation = function(){
+    $scope.ShareLocation = function(){
 
   /*  var date = new Date($scope.poss.timestamp);
     $scope.bdatetime = date;
     console.log($scope.bdatetime);*/
-
-    $http.get('http://localhost:3000/api/allNode').success(function(data){
-        $scope.node = data;
-        console.log(data);
-        
-      })
+    getNodeMark();
   }
 
 
@@ -117,9 +113,9 @@ angular.module('starter.controllers', [])
   }
 
   //mark another location
-    function anothermarker(){
-      var list = [];
-      for (var i = 0; i <LocationService.getAll().length ; i++) {
+  function anothermarker(){
+    var list = [];
+    for (var i = 0; i <LocationService.getAll().length ; i++) {
         //console.log(LocationService.getAll()[i]);
         list.push(LocationService.getAll()[i].Location);
       }
@@ -128,7 +124,7 @@ angular.module('starter.controllers', [])
         //console.log(list[i].domain, list[i].latitude, list[i].longitude);
         mark(list[i].domain, list[i].latitude, list[i].longitude);
       }
-        
+
       function mark(domain, latitude, longitude){
         if(domain === "bus" && ($scope.bus.domainbus==true)){
           new google.maps.Marker({
@@ -145,10 +141,36 @@ angular.module('starter.controllers', [])
           })
         }
       }
-  }
+    }
 
-  function clearmarker(){
+    function clearmarker(){
 
+    }
+
+
+    function getNode(){
+    //console.log($scope.testsend);
+      $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
+        $scope.node = data;
+        for (var i = 0; i < $scope.node.length; i++) {
+          console.log("UUID:"+$scope.node[i].UUID+"  TIMESTAMP:"+$scope.node[i].timestamp + "   BUS"+$scope.node[i].domain.bus);
+        }      
+      })
+    }
+
+    function getNodeMark(){
+    //console.log($scope.testsend);
+      $http.get('http://localhost:3000/api/nodeMark').success(function(data){
+         $scope.node = data;
+      })
+    }
+
+    function saveNode(){
+      $scope.testsend={id:"5",name:"wor"};
+      console.log($scope.testsend);
+      $http.post('http://localhost:3000/api/saveNode',$scope.testsend).success(function(data){
+
+      })
     }
 
 });
