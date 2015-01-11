@@ -40,7 +40,7 @@ angular.module('starter.controllers', [])
   $scope.device = "";
   $scope.myPosition="";
   $scope.markers=LocationService.getAll();
- 
+  $scope.test="bus"
 
   $scope.bus=DomainsService.get();
   //$scope.poss = null;
@@ -50,9 +50,10 @@ angular.module('starter.controllers', [])
 
   $scope.mapCreated = function(map) {
     $scope.map = map;
-    anothermarker();
+    getNode();
     centerOnMe();
 
+   
   };
 
   function centerOnMe() {
@@ -76,6 +77,7 @@ angular.module('starter.controllers', [])
       $scope.loading.hide();
       console.log(pos.timestamp);
       mymarker();
+
     }, function (error) {
       alert('Unable to get location: ' + error.message);
     });
@@ -117,6 +119,8 @@ angular.module('starter.controllers', [])
 
       });
 
+      getNode();
+
   }
 
 
@@ -135,11 +139,14 @@ angular.module('starter.controllers', [])
       }
 
       for (var i = 0; i < list.length; i++) {
-        //console.log(list[i].domain, list[i].latitude, list[i].longitude);
+        console.log(list[i].domain, list[i].latitude, list[i].longitude);
         mark(list[i].domain, list[i].latitude, list[i].longitude);
       }
 
-      function mark(domain, latitude, longitude){
+      
+    }
+
+  function mark(domain, latitude, longitude){
         if(domain === "bus" && ($scope.bus.domainbus==true)){
           new google.maps.Marker({
             position: new google.maps.LatLng(latitude,longitude),
@@ -154,20 +161,18 @@ angular.module('starter.controllers', [])
             icon: "http://maps.google.com/mapfiles/kml/pal4/icon62.png"
           })
         }
-      }
     }
-
     function clearmarker(){
 
     }
 
 
     function getNode(){
-    //console.log($scope.testsend);
       $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
         $scope.node = data;
         for (var i = 0; i < $scope.node.length; i++) {
-          console.log("UUID:"+$scope.node[i].UUID+"  TIMESTAMP:"+$scope.node[i].timestamp + "   BUS"+$scope.node[i].domain.bus);
+          //console.log("UUID:"+$scope.node[i].UUID+"  TIMESTAMP:"+$scope.node[i].timestamp + "   BUS"+$scope.node[i].domain.bus);
+         mark("bus",$scope.node[i].location.latitude,$scope.node[i].location.longitude);                
         }      
       })
     }
@@ -190,5 +195,7 @@ angular.module('starter.controllers', [])
 
       });
     }
+
+
 
 });
