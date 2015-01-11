@@ -68,14 +68,16 @@ app.get('/api/nodeMark',function(req,res){
 
 
 app.post('/api/saveNode',function(req,res){
-	console.log(req.body)
-
+	console.log(req.body);
 });
 
 
 app.post('/api/shareNode',function(req,res){
-	console.log(req.body);
-	
+	//console.log(req.body);
+	db.node.insert((req.body),function(err,data){
+		console.log(data);
+	});
+	//res.send(req.body);
 });
 
 function findByDID(DID){
