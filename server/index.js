@@ -60,7 +60,9 @@ app.get('/api/nodeByDomain',function(req,res){      //sent data from server to a
 
 
 app.get('/api/nodeMark',function(req,res){
-
+	db.node.find({},function(err,node){   //query database		
+			res.send(node); 
+	});  
 });
 
 

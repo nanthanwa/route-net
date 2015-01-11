@@ -28,7 +28,7 @@ angular.module('starter.services', [])
   // Some fake testing data
 
   var locations = [
-  {
+  /*{
     Location:{domain: "bus", latitude:7.010568199999999, longitude: 100.48500}
   },
   {
@@ -57,7 +57,7 @@ angular.module('starter.services', [])
   },
   {
     Location:{domain: "tour", latitude:7.007368199999999, longitude:100.48000}
-  }
+  }*/
   ]
 
 
