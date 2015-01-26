@@ -51,12 +51,13 @@ angular.module('starter.controllers', [])
   $scope.mapCreated = function(map) {
     $scope.map = map;
     getNode();
-    centerOnMe();
+    $scope.centerOnMe();
 
    
   };
 
-  function centerOnMe() {
+
+  $scope.centerOnMe = function() {
     console.log("Centering");
     if (!$scope.map) {
       return;
