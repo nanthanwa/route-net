@@ -123,7 +123,8 @@ angular.module('starter.controllers', [])
       //alert($scope.transportRoute+"<br>"+$scope.poss.timestamp+"<br>"+$scope.poss.coords.latitude+"<br>"+$scope.poss.coords.longitude);
       //alert(msg.setText(Html.fromHtml("<u>Message</u>")));
       //console.log($scope.poss);
-      $http.post('http://localhost:3000/api/shareNode',{
+
+    /*  $http.post('http://localhost:3000/api/shareNode',{
         UUID: uuid,
         timestamp: $scope.poss.timestamp,
         location:{
@@ -141,7 +142,7 @@ angular.module('starter.controllers', [])
       .error(function(data, status, headers, config) {
 
       });
-
+*/
       getNode();
 
   }
@@ -169,17 +170,18 @@ angular.module('starter.controllers', [])
       
     }
 
-  function mark(domain, latitude, longitude){
-        if(domain === "bus" && ($scope.bus.domainbus==true)){
+  function mark(data){
+    console.log(data);
+        if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
           new google.maps.Marker({
-            position: new google.maps.LatLng(latitude,longitude),
+            position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
             map:$scope.map,
             icon: "http://maps.google.com/mapfiles/kml/pal2/icon47.png"
           })
         }
-        else if(domain === "tour" &&($scope.bus.domaintour==true)){
+        else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
           new google.maps.Marker({
-            position: new google.maps.LatLng(latitude,longitude),
+            position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
             map:$scope.map,
             icon: "http://maps.google.com/mapfiles/kml/pal4/icon62.png"
           })
@@ -196,7 +198,7 @@ angular.module('starter.controllers', [])
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log("UUID:"+$scope.node[i].UUID+"  TIMESTAMP:"+$scope.node[i].timestamp + "   BUS"+$scope.node[i].domain.bus);
           console.log($scope.node[i].domain);
-         mark("bus",$scope.node[i].location.latitude,$scope.node[i].location.longitude);                
+         mark($scope.node[i]);                
         }      
       })
     }
