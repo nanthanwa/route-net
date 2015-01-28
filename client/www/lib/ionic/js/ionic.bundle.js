@@ -2357,7 +2357,7 @@ window.ionic = {
 
     if(ele.disabled || ele.type === 'file' || ele.type === 'range') return;
 
-    console.debug('tapElement', ele.tagName, ele.className);
+    //console.debug('tapElement', ele.tagName, ele.className);
 
     var c = getCoordinates(e);
 
@@ -2397,7 +2397,7 @@ window.ionic = {
 
     if( isRecentTap(e) ) {
       // if a tap in the same area just happened, don't continue
-      console.debug('tapPolyfill', 'isRecentTap', ele.tagName);
+//      console.debug('tapPolyfill', 'isRecentTap', ele.tagName);
       return stopEvent(e);
     }
 
