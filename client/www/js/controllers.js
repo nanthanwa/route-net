@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
       new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
         map:$scope.map,
-        icon: "http://maps.google.com/mapfiles/kml/pal3/icon32.png"
+        icon: "img/current.png"
 
       })
       //console.log($scope.poss.coords.latitude);
@@ -104,31 +104,6 @@ angular.module('starter.controllers', [])
     
       show();
 
-      //alert($scope.transportRoute+"<br>"+$scope.poss.timestamp+"<br>"+$scope.poss.coords.latitude+"<br>"+$scope.poss.coords.longitude);
-      //alert(msg.setText(Html.fromHtml("<u>Message</u>")));
-      //console.log($scope.poss);
-
-    /*  $http.post('http://localhost:3000/api/shareNode',{
-        UUID: uuid,
-        timestamp: $scope.poss.timestamp,
-        location:{
-          latitude: $scope.poss.coords.latitude,
-          longitude: $scope.poss.coords.longitude
-        },
-        domain: {
-          bus : $scope.transportRoute
-        }
-      })
-      .success(function(data, status, headers, config){
-        //console.log(data.timestamp);
-        //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
-      })
-      .error(function(data, status, headers, config) {
-
-      });
-*/
-      //  getNode();
-
   }
 
 
@@ -138,23 +113,6 @@ angular.module('starter.controllers', [])
     $location.path('/domain');
   }
 
-  //mark another location
-  // function anothermarker(){
-  //   //var list = [];
-  //   for (var i = 0; i <LocationService.getAll().length ; i++) {
-  //       //console.log(LocationService.getAll()[i]);
-  //       markersArray.push(LocationService.getAll()[i].Location);
-  //     }
-
-  //     console.log(markersArray.length);
-
-  //     for (var i = 0; i < markersArray.length; i++) {
-  //       //console.log(markersArray[i].domain, markersArray[i].latitude, markersArray[i].longitude);
-  //       mark(markersArray[i].domain, markersArray[i].latitude, markersArray[i].longitude);
-  //     }
-
-      
-  //   }
 
   function mark(data){
     //console.log(data);
@@ -162,14 +120,14 @@ angular.module('starter.controllers', [])
           markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
             map:$scope.map,
-            icon: "http://maps.google.com/mapfiles/kml/pal2/icon47.png"
+            icon: "img/bus.png"
           }));
         }
         else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
           markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
             map:$scope.map,
-            icon: "http://maps.google.com/mapfiles/kml/pal4/icon62.png"
+            icon: "img/tour.png"
           }));
         }
     }
@@ -182,9 +140,7 @@ angular.module('starter.controllers', [])
     $timeout(function(){
       $scope.loading.hide();
     },1000);
-
     clearOverlays();
-
   }
 
 
