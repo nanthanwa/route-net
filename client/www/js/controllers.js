@@ -57,7 +57,7 @@ angular.module('starter.controllers', [])
 
 
   $scope.centerOnMe = function() {
-    console.log("Centering");
+    //console.log("Centering");
     if (!$scope.map) {
       return;
     }
@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
       new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
         map:$scope.map,
-        //icon: "http://maps.google.com/mapfiles/kml/pal3/icon32.png"
+        icon: "http://maps.google.com/mapfiles/kml/pal3/icon32.png"
 
       })
       //console.log($scope.poss.coords.latitude);
@@ -147,7 +147,7 @@ angular.module('starter.controllers', [])
   //     }
 
   //     console.log(markersArray.length);
-      
+
   //     for (var i = 0; i < markersArray.length; i++) {
   //       //console.log(markersArray[i].domain, markersArray[i].latitude, markersArray[i].longitude);
   //       mark(markersArray[i].domain, markersArray[i].latitude, markersArray[i].longitude);
@@ -159,18 +159,18 @@ angular.module('starter.controllers', [])
   function mark(data){
     //console.log(data);
         if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
-          new google.maps.Marker({
+          markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
             map:$scope.map,
             icon: "http://maps.google.com/mapfiles/kml/pal2/icon47.png"
-          })
+          }));
         }
         else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
-          new google.maps.Marker({
+          markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
             map:$scope.map,
             icon: "http://maps.google.com/mapfiles/kml/pal4/icon62.png"
-          })
+          }));
         }
     }
   $scope.clearAllNode = function(){
@@ -181,7 +181,7 @@ angular.module('starter.controllers', [])
     });
     $timeout(function(){
       $scope.loading.hide();
-    },1500);
+    },1000);
 
     clearOverlays();
 
@@ -189,8 +189,8 @@ angular.module('starter.controllers', [])
 
 
     function clearOverlays() {
-      console.log("clear");
-      console.log(markersArray.length);
+      //console.log(markersArray.length);
+      //console.log(markersArray);
       for (var i = 0; i < markersArray.length; i++ ) {
         markersArray[i].setMap(null);
       }
@@ -204,7 +204,7 @@ angular.module('starter.controllers', [])
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log("UUID:"+$scope.node[i].UUID+"  TIMESTAMP:"+$scope.node[i].timestamp + "   BUS"+$scope.node[i].domain.bus);
           //console.log($scope.node[i].domain);
-         mark($scope.node[i]);                
+         mark($scope.node[i]);              
         }      
       })
     }
