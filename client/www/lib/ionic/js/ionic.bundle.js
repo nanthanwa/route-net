@@ -2383,7 +2383,7 @@ window.ionic = {
     }
 
     if(target.control) {
-      console.debug('tapElement, target.control, stop');
+    //console.debug('tapElement, target.control, stop');
       return stopEvent(e);
     }
   };
