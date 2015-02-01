@@ -158,7 +158,7 @@ angular.module('starter.controllers', [])
       $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
         $scope.node = data;
         for (var i = 0; i < $scope.node.length; i++) {
-          //console.log("UUID:"+$scope.node[i].UUID+"  TIMESTAMP:"+$scope.node[i].timestamp + "   BUS"+$scope.node[i].domain.bus);
+          //console.log($scope.node[i]);
           //console.log($scope.node[i].domain);
          mark($scope.node[i]);              
         }      
@@ -229,7 +229,7 @@ angular.module('starter.controllers', [])
       console.log(type);
       $http.post('http://localhost:3000/api/shareNode',{
       UUID: uuid,
-      timestamp: $scope.poss.timestamp,
+      timestamp: parseInt($scope.poss.timestamp),
       location:{
         latitude: $scope.poss.coords.latitude,
         longitude: $scope.poss.coords.longitude

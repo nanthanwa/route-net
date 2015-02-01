@@ -12,6 +12,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.json());
 
+var timestamp= new Date().getTime();
 
 app.all('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "http://localhost:8100");
@@ -22,6 +23,9 @@ app.all('/*', function (req, res, next) {
 
 http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
+	console.log(timestamp)
+	timeStampTime();
+	
 })
 
 
@@ -67,22 +71,26 @@ app.get('/api/nodeMark',function(req,res){
 
 
 
-app.post('/api/saveNode',function(req,res){
-	console.log(req.body);
-});
-
 
 app.post('/api/shareNode',function(req,res){
 	//console.log(req.body);
 	db.node.insert((req.body),function(err,data){
-		console.log(data);
+		//console.log(data);
 	});
 	//res.send(req.body);
 });
 
-function findByDID(DID){
-	db.master.find({DID:DID},function(err,master){
-		res.send(master)
+function findByTimeStamp(Time){
+	db.node.find({timestamp:{$gte:Time}},function(err,node){
+		console.log(node)
 	});
+}
+
+function timeStampTime(){
+	setInterval(function(){
+		findByTimeStamp(timestamp);	
+		timestamp= new Date().getTime();		
+		console.log(timestamp)
+	},60000)
 }
 
