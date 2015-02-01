@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
       new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
         map:$scope.map,
-        icon: "img/current.png"
+          icon: "img/current.png"
 
       })
       //console.log($scope.poss.coords.latitude);
@@ -131,6 +131,7 @@ angular.module('starter.controllers', [])
           }));
         }
     }
+
   $scope.clearAllNode = function(){
     //console.log("clear");
     $scope.loading = $ionicLoading.show({
@@ -155,7 +156,7 @@ angular.module('starter.controllers', [])
 
 
     function getNode(){
-      $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
+      $http.get('http://103.245.167.177:3000/api/nodeByDomain').success(function(data){
         $scope.node = data;
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log($scope.node[i]);
@@ -169,7 +170,7 @@ angular.module('starter.controllers', [])
     function saveNode(){
       $scope.testsend={id:"5",name:"wor"};
       //console.log($scope.testsend);
-      $http.post('http://localhost:3000/api/saveNode',$scope.testsend)
+      $http.post('http://103.245.167.177:3000/api/saveNode',$scope.testsend)
       .success(function(data, status, headers, config){
 
       })
@@ -227,7 +228,7 @@ angular.module('starter.controllers', [])
       //console.log($scope.transportRoute);
       var type = (index == 0 ? "bus" : "tour");
       console.log(type);
-      $http.post('http://localhost:3000/api/shareNode',{
+      $http.post('http://103.245.167.177:3000/api/shareNode',{
       UUID: uuid,
       timestamp: parseInt($scope.poss.timestamp),
       location:{

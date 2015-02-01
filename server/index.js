@@ -25,7 +25,6 @@ http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
 	console.log(timestamp)
 	timeStampTime();
-	
 })
 
 
