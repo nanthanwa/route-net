@@ -99,14 +99,18 @@ function timeStampTime(){
 }
 
 function findByLocation(){
-	db.node.find({location:
+	db.node.find({loc:
 				{$near:{
 				 $geometry:{type: "Point",
-				 coordinates:[ 7.0073791, 100.5020635 ]},
-           		 $maxDistance: 5000
+				 coordinates:[100.47, 7.0043681999999992]},
+           		 $maxDistance: 2000
 				}}}
             ,function(err,node){
-            	console.log(node);
+            	/*for(var i=0;i<node.length;i++){
+            	console.log(node[i].loc.coordinates[0] ,node[i].loc.coordinates[1]);
+            	}
+            	*/
+            	console.log(node)
             })
 }
 
