@@ -24,8 +24,12 @@ app.all('/*', function (req, res, next) {
 
 http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
+
 	//console.log(timestamp)
-	//timeStampTime();
+	timeStampTime();
+	findByLocation();
+	
+
 })
 
 
@@ -73,7 +77,8 @@ app.get('/api/nodeMark',function(req,res){
 app.post('/api/shareNode',function(req,res){
 	//console.log(req.body);
 	db.node.insert((req.body),function(err,data){
-		console.log(data);
+		//console.log(data);
+		res.send(data);
 	});
 	res.send(req.body);
 });
@@ -90,5 +95,21 @@ function timeStampTime(){
 		timestamp= new Date().getTime();		
 		console.log(timestamp)
 	},60000)
+}
+
+function findByLocation(){
+	db.node.find({loc:
+				{$near:{
+				 $geometry:{type: "Point",
+				 coordinates:[100.47, 7.0043681999999992]},
+           		 $maxDistance: 2000
+				}}}
+            ,function(err,node){
+            	/*for(var i=0;i<node.length;i++){
+            	console.log(node[i].loc.coordinates[0] ,node[i].loc.coordinates[1]);
+            	}
+            	*/
+            	console.log(node)
+            })
 }
 
