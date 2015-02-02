@@ -25,6 +25,7 @@ http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
 	console.log(timestamp)
 	timeStampTime();
+	findByLocation();
 	
 })
 
@@ -76,6 +77,7 @@ app.post('/api/shareNode',function(req,res){
 	//console.log(req.body);
 	db.node.insert((req.body),function(err,data){
 		//console.log(data);
+		res.send(data);
 	});
 	//res.send(req.body);
 });
@@ -92,5 +94,17 @@ function timeStampTime(){
 		timestamp= new Date().getTime();		
 		console.log(timestamp)
 	},60000)
+}
+
+function findByLocation(){
+	db.node.find({location:
+				{$near:{
+				 $geometry:{type: "Point",
+				 coordinates:[ 7.0073791, 100.5020635 ]},
+           		 $maxDistance: 5000
+				}}}
+            ,function(err,node){
+            	console.log(node);
+            })
 }
 
