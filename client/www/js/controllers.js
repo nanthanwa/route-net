@@ -47,7 +47,7 @@ angular.module('starter.controllers', [])
 
   //console.log($scope.bus);
 
-  window.plugins.diagnostic.isLocationEnabled(locationEnabledSuccessCallback, locationEnabledErrorCallback);
+
 
    function locationEnabledSuccessCallback(result) {
       if (result)
