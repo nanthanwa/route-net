@@ -42,13 +42,23 @@ angular.module('starter.controllers', [])
   $scope.myPosition="";
   $scope.markers=LocationService.getAll();
   $scope.test="bus"
-
   $scope.bus=DomainsService.get();
   //$scope.poss = null;
 
   //console.log($scope.bus);
 
+  window.plugins.diagnostic.isLocationEnabled(locationEnabledSuccessCallback, locationEnabledErrorCallback);
 
+   function locationEnabledSuccessCallback(result) {
+      if (result)
+         alert("Location ON");
+      else
+         alert("Location OFF");
+   }
+
+   function locationEnabledErrorCallback(error) {
+      console.log(error);
+   }
 
   $scope.mapCreated = function(map) {
     $scope.map = map;
@@ -102,11 +112,38 @@ angular.module('starter.controllers', [])
     $scope.transportRoute = "";
 
     $scope.shareLocation = function(){
-    
       show();
-
   }
 
+  
+  // Triggered on a button click, or some other target
+  function show() {
+
+     // Show the action sheet
+     var hideSheet = $ionicActionSheet.show({
+       buttons: [
+         { text: 'Bus' },
+         { text: 'Tour' }
+       ],
+       titleText: 'Select Domain',
+       cancelText: 'Cancel',
+       cancel: function() {
+            // add cancel code..
+          },
+       buttonClicked: function(index) {
+        if(index == 0){ //bus
+          //console.log("Bus");
+          insert_node(index);
+        }
+        else if(index == 1){ //tour
+          //console.log("Tour");
+          insert_node(index);
+        }
+         return true;
+       }
+     });
+
+  };
 
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
@@ -184,36 +221,6 @@ angular.module('starter.controllers', [])
       });
     }
 
-
-    // Triggered on a button click, or some other target
-  function show() {
-
-     // Show the action sheet
-     var hideSheet = $ionicActionSheet.show({
-       buttons: [
-         { text: 'Bus' },
-         { text: 'Tour' }
-       ],
-       titleText: 'Select Domain',
-       cancelText: 'Cancel',
-       cancel: function() {
-            // add cancel code..
-          },
-       buttonClicked: function(index) {
-        if(index == 0){ //bus
-          //console.log("Bus");
-          insert_node(index);
-        }
-        else if(index == 1){ //tour
-          //console.log("Tour");
-          insert_node(index);
-        }
-         return true;
-       }
-     });
-
-  };
-
   function insert_node(index){
       //Create Globally unique identifier for google chrome
       var guid = (function() {
@@ -249,8 +256,15 @@ angular.module('starter.controllers', [])
     .success(function(data, status, headers, config){
       //console.log(data.timestamp);
       //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
-      console.log("status");
-      
+      //console.log(status);
+      $scope.loading = $ionicLoading.show({
+      content: 'Success',
+      showBackdrop: false
+      });
+      $timeout(function(){
+        $scope.loading.hide();
+      },1000);
+
     })
     .error(function(data, status, headers, config) {
 
@@ -258,5 +272,6 @@ angular.module('starter.controllers', [])
   
     //console.log(index); 
   }
+
 
 })
