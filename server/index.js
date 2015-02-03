@@ -59,7 +59,8 @@ app.get('/api/allPos',function(req,res){      //sent data from server to app.js 
 
 app.get('/api/nodeByDomain',function(req,res){      //sent data from server to app.js (pass docs) 
 	//console.log(req);
-	db.node.find({domain : { $exists : true }, location : {$exists : true}},function(err,node){   //query database		
+
+	db.node.find({domain : { $exists : true }, loc : {$exists : true}},function(err,node){   //query database	
 			res.send(node); 
 	});  
 });
