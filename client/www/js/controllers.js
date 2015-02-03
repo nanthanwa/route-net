@@ -117,16 +117,17 @@ angular.module('starter.controllers', [])
 
   function mark(data){
     //console.log(data.domain.type);
+    console.log(data.loc.coordinates[0],data.loc.coordinates[1])
         if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
           markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
+            position: new google.maps.LatLng(data.loc.coordinates[0],data.loc.coordinates[1]),
             map:$scope.map,
             icon: "img/bus.png"
           }));
         }
         else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
           markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.location.latitude,data.location.longitude),
+            position: new google.maps.LatLng(data.loc.coordinates[0],data.loc.coordinates[1]),
             map:$scope.map,
             icon: "img/tour.png"
           }));
@@ -161,7 +162,7 @@ angular.module('starter.controllers', [])
         $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
-          //console.log($scope.node[i]);
+          console.log($scope.node[i]);
           //console.log($scope.node[i].domain);
          mark($scope.node[i]);              
         }      
