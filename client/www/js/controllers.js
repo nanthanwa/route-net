@@ -117,17 +117,19 @@ angular.module('starter.controllers', [])
 
   function mark(data){
     //console.log(data.domain.type);
-    console.log(data.loc.coordinates[0],data.loc.coordinates[1])
+    //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
         if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
+          console.log("bus TRUE")
           markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[0],data.loc.coordinates[1]),
+            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
             map:$scope.map,
             icon: "img/bus.png"
           }));
         }
         else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
+          console.log("tour TRUE")
           markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[0],data.loc.coordinates[1]),
+            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
             map:$scope.map,
             icon: "img/tour.png"
           }));
@@ -162,7 +164,7 @@ angular.module('starter.controllers', [])
         $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
-          console.log($scope.node[i]);
+         // console.log($scope.node[i]);
           //console.log($scope.node[i].domain);
          mark($scope.node[i]);              
         }      
@@ -234,9 +236,10 @@ angular.module('starter.controllers', [])
       $http.post('http://localhost:3000/api/shareNode',{
       UUID: uuid,
       timestamp: parseInt($scope.poss.timestamp),
-      location:{
-        latitude: $scope.poss.coords.latitude,
-        longitude: $scope.poss.coords.longitude
+      loc:{
+        type: "Point",
+        coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
+    
       },
       domain: {
         type : type,

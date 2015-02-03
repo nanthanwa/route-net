@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 
 var timestamp= new Date().getTime();
 
+
 app.all('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "http://localhost:8100");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -27,7 +28,7 @@ http.listen(port, function () {
 
 	//console.log(timestamp)
 	timeStampTime();
-	findByLocation();
+	//findByLocation();
 	
 
 })
@@ -61,7 +62,8 @@ app.get('/api/nodeByDomain',function(req,res){      //sent data from server to a
 	//console.log(req);
 
 	db.node.find({domain : { $exists : true }, loc : {$exists : true}},function(err,node){   //query database	
-			res.send(node); 
+			res.send(node);
+			findAllByLocation(node); 
 	});  
 });
 
@@ -77,12 +79,19 @@ app.get('/api/nodeMark',function(req,res){
 
 app.post('/api/shareNode',function(req,res){
 	//console.log(req.body);
-	db.node.insert((req.body),function(err,data){
-		//console.log(data);
-		res.send(data);
+	db.node.insert((req.body),function(err,data){		
+		//res.send(data);
 	});
 	res.send(req.body);
 });
+
+app.get('/api/allmaster',function(req,res){
+	//console.log(req.body);
+	res.send(masternode)
+});
+
+
+
 
 function findByTimeStamp(Time){
 	db.node.find({timestamp:{$gte:Time}},function(err,node){
@@ -98,19 +107,25 @@ function timeStampTime(){
 	},60000)
 }
 
-function findByLocation(){
+function findByLocation(node){
 	db.node.find({loc:
 				{$near:{
 				 $geometry:{type: "Point",
-				 coordinates:[100.47, 7.0043681999999992]},
-           		 $maxDistance: 2000
+				 coordinates:[node.loc.coordinates[0], node.loc.coordinates[1]]},
+           		 $maxDistance: 10
 				}}}
             ,function(err,node){
             	/*for(var i=0;i<node.length;i++){
             	console.log(node[i].loc.coordinates[0] ,node[i].loc.coordinates[1]);
-            	}
-            	*/
+            	}*/
+            	console.log("Near Node----------------------------------")
             	console.log(node)
             })
 }
 
+
+function findAllByLocation(nodes){
+	for(var i=0;i<nodes.length;i++){
+		findByLocation(nodes[i]);		
+	}
+}
