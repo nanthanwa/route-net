@@ -18,6 +18,7 @@ app.all('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "http://localhost:8100");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 	res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+	res.header("Content-Type", "application/x-www-form-urlencoded");
 	next();
 });
 
@@ -58,7 +59,8 @@ app.get('/api/allPos',function(req,res){      //sent data from server to app.js 
 
 app.get('/api/nodeByDomain',function(req,res){      //sent data from server to app.js (pass docs) 
 	//console.log(req);
-	db.node.find({domain : { $exists : true }, loc : {$exists : true}},function(err,node){   //query database		
+
+	db.node.find({domain : { $exists : true }, loc : {$exists : true}},function(err,node){   //query database	
 			res.send(node); 
 	});  
 });
@@ -79,7 +81,7 @@ app.post('/api/shareNode',function(req,res){
 		//console.log(data);
 		res.send(data);
 	});
-	//res.send(req.body);
+	res.send(req.body);
 });
 
 function findByTimeStamp(Time){
