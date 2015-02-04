@@ -47,8 +47,6 @@ angular.module('starter.controllers', [])
 
   //console.log($scope.bus);
 
-
-
   function locationEnabledSuccessCallback(result) {
     if (result)
      alert("Location ON");
@@ -154,21 +152,26 @@ $scope.centerOnMe = function() {
 
   function mark(data){
     //console.log(data.domain.type);
-    //console.log(data.loc.coordinates[1],data.loc.coordinates[0]);
-    if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
-      markersArray.push(new google.maps.Marker({
-        position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
-        map:$scope.map,
-        icon: "img/bus.png"
-      }));
-    }
-    else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
-      markersArray.push(new google.maps.Marker({
-        position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
-        map:$scope.map,
-        icon: "img/tour.png"
-      }));
-    }
+
+    //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
+        if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
+          console.log("bus TRUE")
+          markersArray.push(new google.maps.Marker({
+            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+            map:$scope.map,
+            icon: "img/bus.png"
+          }));
+        }
+        else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
+          console.log("tour TRUE")
+          markersArray.push(new google.maps.Marker({
+            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+            map:$scope.map,
+            icon: "img/tour.png"
+          }));
+        }
+
+  
   }
 
   function getNode(){
@@ -176,7 +179,6 @@ $scope.centerOnMe = function() {
       $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
-          //console.log($scope.node[i]);
           //console.log($scope.node[i].domain);
           mark($scope.node[i]);              
         }      
@@ -204,18 +206,19 @@ $scope.centerOnMe = function() {
       var type = (index == 0 ? "bus" : "tour");
       //console.log(type);
       $http.post('http://localhost:3000/api/shareNode',{
-        UUID: uuid,
-        timestamp: parseInt($scope.poss.timestamp),
-        location:{
-          latitude: $scope.poss.coords.latitude,
-          longitude: $scope.poss.coords.longitude
-        },
-        domain: {
-          type : type,
-          name : $scope.transportRoute
-        }
-      })
-      .success(function(data, status, headers, config){
+
+      UUID: uuid,
+      timestamp: parseInt($scope.poss.timestamp),
+      loc:{
+        type: "Point",
+        coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
+      },
+      domain: {
+        type : type,
+        name : $scope.transportRoute
+      }
+    })
+    .success(function(data, status, headers, config){
       //console.log(data.timestamp);
       //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
       //console.log(status);
