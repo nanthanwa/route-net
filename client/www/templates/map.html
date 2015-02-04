@@ -1,5 +1,5 @@
 <ion-view view-title="Map" ng-controller="MapCtrl">
-  <ion-header-bar class="bar-stable" >
+  <ion-header-bar class="bar-stable bar-positive" >
   <button class="button ion-chevron-left button-positive" ng-click="goDomain()">  Back</button>
   <h1 class="title">Map</h1>
   <button class="button button-icon ion-android-settings" ng-click="clearAllNode()"></button>
@@ -10,12 +10,14 @@
 
 </ion-content>
 
-<ion-footer-bar class="bar-stable">
+<ion class="bar bar-subfooter bar-energized">
+	<button class="button button-icon ion-refresh" ng-click="refreshNode()"></button>
+</ion>
+<ion-footer-bar class="bar-positive">
 <button ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></button>
-<ion class="item item-input">
-  <input type="text" placeholder="แชร์สายรถโดยสาร" size="20" ng-model="transportRoute" >
-
+<input type="text" placeholder="  แชร์สายรถโดยสาร" size="20" ng-model="transportRoute" >
 <button class="button button-icon ion-android-share" ng-click="shareLocation()"></button>
+
 </ion-footer-bar>
 
 </ion-view>
