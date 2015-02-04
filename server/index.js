@@ -14,8 +14,6 @@ app.use(bodyParser.json());
 
 var timestamp= new Date().getTime();
 
-var allNode = [];
-
 app.all('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "http://localhost:8100");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -89,13 +87,12 @@ app.post('/api/shareNode',function(req,res){
 app.post('/api/updateNode',function(req,res){
 	//console.log(req.body);
 	db.node.find({},function(err, node){
-		allNode = node;
 		//console.log(allNode.length);
-		for(var i = 0 ; i < allNode.length ; i++){
+		for(var i = 0 ; i < node.length ; i++){
 			//console.log(allNode[i].UUID);
 			db.node.update(
 				{
-					UUID : allNode[i].UUID
+					UUID : node[i].UUID
 				},
 				{
 					$set:
@@ -108,9 +105,10 @@ app.post('/api/updateNode',function(req,res){
 				}
 			);
 		}
-		//console.log("update at time " + new Date().getTime().toString())	
+		//console.log("update at time " + new Date().getTime().toString())
+		res.send("update at time " + new Date().getTime().toString());
 	});
-		//res.send("test");
+		
 });
 
 
