@@ -47,27 +47,27 @@ angular.module('starter.controllers', [])
 
   //console.log($scope.bus);
 
-  window.plugins.diagnostic.isLocationEnabled(locationEnabledSuccessCallback, locationEnabledErrorCallback);
-
-   function locationEnabledSuccessCallback(result) {
-      if (result)
-         alert("Location ON");
-      else
-         alert("Location OFF");
-   }
-
-   function locationEnabledErrorCallback(error) {
-      console.log(error);
-   }
-
-  $scope.mapCreated = function(map) {
-    $scope.map = map;
-    getNode();
-    $scope.centerOnMe(); 
-  };
 
 
-  $scope.centerOnMe = function() {
+  function locationEnabledSuccessCallback(result) {
+    if (result)
+     alert("Location ON");
+   else
+     alert("Location OFF");
+ }
+
+ function locationEnabledErrorCallback(error) {
+  console.log(error);
+}
+
+$scope.mapCreated = function(map) {
+  $scope.map = map;
+  getNode();
+  $scope.centerOnMe(); 
+};
+
+
+$scope.centerOnMe = function() {
     //console.log("Centering");
     if (!$scope.map) {
       return;
@@ -102,7 +102,7 @@ angular.module('starter.controllers', [])
       new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
         map:$scope.map,
-          icon: "img/current.png"
+        icon: "img/current.png"
 
       })
       //console.log($scope.poss.coords.latitude);
@@ -113,24 +113,24 @@ angular.module('starter.controllers', [])
 
     $scope.shareLocation = function(){
       show();
-  }
+    }
 
-  
+
   // Triggered on a button click, or some other target
   function show() {
 
      // Show the action sheet
      var hideSheet = $ionicActionSheet.show({
        buttons: [
-         { text: 'Bus' },
-         { text: 'Tour' }
+       { text: 'Bus' },
+       { text: 'Tour' }
        ],
        titleText: 'Select Domain',
        cancelText: 'Cancel',
        cancel: function() {
             // add cancel code..
           },
-       buttonClicked: function(index) {
+          buttonClicked: function(index) {
         if(index == 0){ //bus
           //console.log("Bus");
           insert_node(index);
@@ -139,11 +139,11 @@ angular.module('starter.controllers', [])
           //console.log("Tour");
           insert_node(index);
         }
-         return true;
-       }
-     });
+        return true;
+      }
+    });
 
-  };
+   };
 
   //Controller for DOMAIN !!
   $scope.goDomain= function(){
@@ -154,22 +154,86 @@ angular.module('starter.controllers', [])
 
   function mark(data){
     //console.log(data.domain.type);
-    console.log(data.loc.coordinates[0],data.loc.coordinates[1])
-        if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
-          markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[0],data.loc.coordinates[1]),
-            map:$scope.map,
-            icon: "img/bus.png"
-          }));
-        }
-        else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
-          markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[0],data.loc.coordinates[1]),
-            map:$scope.map,
-            icon: "img/tour.png"
-          }));
-        }
+    //console.log(data.loc.coordinates[1],data.loc.coordinates[0]);
+    if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
+      markersArray.push(new google.maps.Marker({
+        position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+        map:$scope.map,
+        icon: "img/bus.png"
+      }));
     }
+    else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
+      markersArray.push(new google.maps.Marker({
+        position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+        map:$scope.map,
+        icon: "img/tour.png"
+      }));
+    }
+  }
+
+  function getNode(){
+    $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
+      $scope.node = data;
+        //console.log(data);
+        for (var i = 0; i < $scope.node.length; i++) {
+          //console.log($scope.node[i]);
+          //console.log($scope.node[i].domain);
+          mark($scope.node[i]);              
+        }      
+      });
+  }
+
+
+  function insert_node(index){
+      //Create Globally unique identifier for google chrome
+      var guid = (function() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+        }
+        return function() {
+          return s4() + s4() + '' + s4() + '' + s4()
+        };
+      })();
+
+      var uuid = guid();
+      
+      //console.log(uuid);
+      //console.log($scope.transportRoute);
+      var type = (index == 0 ? "bus" : "tour");
+      //console.log(type);
+      $http.post('http://localhost:3000/api/shareNode',{
+        UUID: uuid,
+        timestamp: parseInt($scope.poss.timestamp),
+        location:{
+          latitude: $scope.poss.coords.latitude,
+          longitude: $scope.poss.coords.longitude
+        },
+        domain: {
+          type : type,
+          name : $scope.transportRoute
+        }
+      })
+      .success(function(data, status, headers, config){
+      //console.log(data.timestamp);
+      //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
+      //console.log(status);
+      $scope.loading = $ionicLoading.show({
+        content: 'Success',
+        showBackdrop: false
+      });
+      $timeout(function(){
+        $scope.loading.hide();
+      },1000);
+
+    })
+      .error(function(data, status, headers, config) {
+
+      });
+
+    //console.log(index); 
+  }
 
   $scope.clearAllNode = function(){
     //console.log("clear");
@@ -184,7 +248,7 @@ angular.module('starter.controllers', [])
   }
 
 
-    function clearOverlays() {
+  function clearOverlays() {
       //console.log(markersArray.length);
       //console.log(markersArray);
       for (var i = 0; i < markersArray.length; i++ ) {
@@ -192,83 +256,27 @@ angular.module('starter.controllers', [])
       }
       markersArray.length = 0;
     }
+    
 
-
-    function getNode(){
-      $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
-        $scope.node = data;
-        //console.log(data);
-        for (var i = 0; i < $scope.node.length; i++) {
-          console.log($scope.node[i]);
-          //console.log($scope.node[i].domain);
-         mark($scope.node[i]);              
-        }      
-      })
-    }
-
-
-    function saveNode(){
-      $scope.testsend={id:"5",name:"wor"};
-      //console.log($scope.testsend);
-      $http.post('http://localhost:3000/api/saveNode',$scope.testsend)
-      .success(function(data, status, headers, config){
-
-      })
-      .error(function(data, status, headers, config) {
-
-      });
-    }
-
-  function insert_node(index){
-      //Create Globally unique identifier for google chrome
-      var guid = (function() {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-                   .toString(16)
-                   .substring(1);
-      }
-      return function() {
-        return s4() + s4() + '' + s4() + '' + s4()
-      };
-      })();
-
-      var uuid = guid();
+    $scope.refreshNode = function(){
       
-      //console.log(uuid);
-      //console.log($scope.transportRoute);
-      var type = (index == 0 ? "bus" : "tour");
-      //console.log(type);
-      $http.post('http://localhost:3000/api/shareNode',{
-      UUID: uuid,
-      timestamp: parseInt($scope.poss.timestamp),
-      location:{
-        latitude: $scope.poss.coords.latitude,
-        longitude: $scope.poss.coords.longitude
-      },
-      domain: {
-        type : type,
-        name : $scope.transportRoute
-      }
-    })
-    .success(function(data, status, headers, config){
-      //console.log(data.timestamp);
-      //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
-      //console.log(status);
-      $scope.loading = $ionicLoading.show({
-      content: 'Success',
-      showBackdrop: false
-      });
-      $timeout(function(){
-        $scope.loading.hide();
-      },1000);
+      setInterval(function(){
+        $http.post('http://localhost:3000/api/updateNode', {
+          
+          //msg:'hello word!'
 
-    })
-    .error(function(data, status, headers, config) {
+        })
+        .success(function(data, status, headers, config) {
+            
+            console.log(data);
 
-    });
-  
-    //console.log(index); 
-  }
+        })
+        .error(function(data, status, headers, config) {
+            
+        });
+      },5000);
+
+    }    
 
 
-})
+  })
