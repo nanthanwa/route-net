@@ -14,7 +14,6 @@ app.use(bodyParser.json());
 
 var timestamp= new Date().getTime();
 
-
 app.all('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "http://localhost:8100");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -27,11 +26,11 @@ http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
 
 	//console.log(timestamp)
-	timeStampTime();
+	//timeStampTime();
 	//findByLocation();
 	
 
-})
+});
 
 
 app.get('/api/allNode',function(req,res){      //sent data from server to app.js (pass docs) 
@@ -63,7 +62,7 @@ app.get('/api/nodeByDomain',function(req,res){      //sent data from server to a
 
 	db.node.find({domain : { $exists : true }, loc : {$exists : true}},function(err,node){   //query database	
 			res.send(node);
-			findAllByLocation(node); 
+			//findAllByLocation(node); 
 	});  
 });
 
@@ -85,17 +84,39 @@ app.post('/api/shareNode',function(req,res){
 	res.send(req.body);
 });
 
-app.get('/api/allmaster',function(req,res){
+app.post('/api/updateNode',function(req,res){
 	//console.log(req.body);
-	res.send(masternode)
+	db.node.find({},function(err, node){
+		//console.log(allNode.length);
+		for(var i = 0 ; i < node.length ; i++){
+			//console.log(allNode[i].UUID);
+			db.node.update(
+				{
+					UUID : node[i].UUID
+				},
+				{
+					$set:
+				      {
+				        timestamp: parseInt(new Date().getTime())
+				      }
+				},
+				{
+					multi: true
+				}
+			);
+		}
+		//console.log("update at time " + new Date().getTime().toString())
+		res.send("update at time " + new Date().getTime().toString());
+	});
+		
 });
-
 
 
 
 function findByTimeStamp(Time){
 	db.node.find({timestamp:{$gte:Time}},function(err,node){
-		console.log(node)
+		allNode = node;
+		console.log(allNode);
 	});
 }
 
@@ -104,7 +125,7 @@ function timeStampTime(){
 		findByTimeStamp(timestamp);	
 		timestamp= new Date().getTime();		
 		console.log(timestamp)
-	},60000)
+	},60000);
 }
 
 function findByLocation(node){
