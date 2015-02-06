@@ -109,6 +109,7 @@ function timeStampTime(){
 
 function findByLocation(node){
 	db.node.find({loc:
+	
 				{$near:{
 				 $geometry:{type: "Point",
 				 coordinates:[node.loc.coordinates[0], node.loc.coordinates[1]]},
@@ -121,6 +122,7 @@ function findByLocation(node){
             	console.log("Near Node----------------------------------")
             	console.log(node)
             })
+	
 }
 
 
