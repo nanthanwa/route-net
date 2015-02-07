@@ -60,8 +60,9 @@ angular.module('starter.controllers', [])
 
 $scope.mapCreated = function(map) {
   $scope.map = map;
-  getNode();
-  $scope.centerOnMe(); 
+  $scope.centerOnMe();
+  refreshNode();
+
 };
 
 
@@ -238,16 +239,17 @@ $scope.centerOnMe = function() {
     //console.log(index); 
   }
 
-  $scope.clearAllNode = function(){
+  function clearAllNode(){
     //console.log("clear");
-    $scope.loading = $ionicLoading.show({
+    /*$scope.loading = $ionicLoading.show({
       content: 'All node are cleared',
       showBackdrop: false
     });
     $timeout(function(){
       $scope.loading.hide();
-    },1000);
+    },1000);*/
     clearOverlays();
+    
   }
 
 
@@ -261,23 +263,27 @@ $scope.centerOnMe = function() {
     }
     
 
-    $scope.refreshNode = function(){
+    function refreshNode(){
       
       setInterval(function(){
         $http.post('http://localhost:3000/api/updateNode', {
-          
-          //msg:'hello word!'
-
+            UUID: "f6a0fd1452f8f736",
+          loc:{
+            type: "Point",
+            coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
+          },
+              
         })
-        .success(function(data, status, headers, config) {
-            
+        .success(function(data, status, headers, config) {            
             console.log(data);
-
+            clearAllNode();
+            getNode();
         })
         .error(function(data, status, headers, config) {
             
         });
-      },5000);
+        
+      },3000);
 
     }    
 

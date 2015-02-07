@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 var timestamp= new Date().getTime();
-
+var temp=[];
 app.all('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "http://localhost:8100");
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -26,16 +26,15 @@ http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
 
 	//console.log(timestamp)
-	//timeStampTime();
-	//findByLocation();
-	
-
+	//timeStampTime();		
+	updateNode();
 });
 
 
 app.get('/api/allNode',function(req,res){      //sent data from server to app.js (pass docs) 
 	db.node.find({},function(err,node){   //query database
 		res.send(node);
+
 	});
 });    
 
@@ -62,7 +61,6 @@ app.get('/api/nodeByDomain',function(req,res){      //sent data from server to a
 
 	db.node.find({domain : { $exists : true }, loc : {$exists : true}},function(err,node){   //query database	
 			res.send(node);
-			//findAllByLocation(node); 
 	});  
 });
 
@@ -85,11 +83,30 @@ app.post('/api/shareNode',function(req,res){
 });
 
 app.post('/api/updateNode',function(req,res){
-	//console.log(req.body);
+	
+			db.node.update(
+				{
+					UUID : req.body.UUID
+				},
+				{
+					$set:
+				      {
+				        timestamp: parseInt(new Date().getTime()),
+				        loc:{type:"Point",coordinates:[req.body.loc.coordinates[0],req.body.loc.coordinates[1]]}
+				      }
+				},
+				{
+					multi: true
+				}
+			);
+});
+
+
+//for Server Update
+function updateNode(){
+	setInterval(function(){
 	db.node.find({},function(err, node){
-		//console.log(allNode.length);
 		for(var i = 0 ; i < node.length ; i++){
-			//console.log(allNode[i].UUID);
 			db.node.update(
 				{
 					UUID : node[i].UUID
@@ -97,7 +114,7 @@ app.post('/api/updateNode',function(req,res){
 				{
 					$set:
 				      {
-				        timestamp: parseInt(new Date().getTime())
+				        timestamp: parseInt(new Date().getTime()),
 				      }
 				},
 				{
@@ -105,12 +122,9 @@ app.post('/api/updateNode',function(req,res){
 				}
 			);
 		}
-		//console.log("update at time " + new Date().getTime().toString())
-		res.send("update at time " + new Date().getTime().toString());
-	});
-		
-});
-
+	});	
+	},15000)
+}
 
 
 function findByTimeStamp(Time){
@@ -128,27 +142,5 @@ function timeStampTime(){
 	},60000);
 }
 
-function findByLocation(node){
-	db.node.find({loc:
-	
-				{$near:{
-				 $geometry:{type: "Point",
-				 coordinates:[node.loc.coordinates[0], node.loc.coordinates[1]]},
-           		 $maxDistance: 10
-				}}}
-            ,function(err,node){
-            	/*for(var i=0;i<node.length;i++){
-            	console.log(node[i].loc.coordinates[0] ,node[i].loc.coordinates[1]);
-            	}*/
-            	console.log("Near Node----------------------------------")
-            	console.log(node)
-            })
-	
-}
 
 
-function findAllByLocation(nodes){
-	for(var i=0;i<nodes.length;i++){
-		findByLocation(nodes[i]);		
-	}
-}
