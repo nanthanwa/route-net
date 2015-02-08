@@ -66,8 +66,10 @@ angular.module('starter.controllers', [])
 
 $scope.mapCreated = function(map) {
   $scope.map = map;
-  getNode();
-  //$scope.centerOnMe(); 
+
+  $scope.centerOnMe();
+  refreshNode();
+
 };
 
 
@@ -161,19 +163,21 @@ $scope.centerOnMe = function() {
 
     //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
         if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
-//          console.log("bus TRUE")
+
           markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
             map:$scope.map,
-            icon: "img/bus.png"
+            icon: "img/bus.png",
+            title:data.domain.name
           }));
         }
         else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
-          console.log("tour TRUE")
+         // console.log("tour TRUE")
           markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
             map:$scope.map,
-            icon: "img/tour.png"
+            icon: "img/tour.png",
+            title:data.domain.name
           }));
         }
 
@@ -185,7 +189,7 @@ $scope.centerOnMe = function() {
       $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
-          //console.log($scope.node[i].domain);
+          //console.log($scope.node[i]);
           mark($scope.node[i]);              
         }      
       });
@@ -244,16 +248,17 @@ $scope.centerOnMe = function() {
     //console.log(index); 
   }
 
-  $scope.clearAllNode = function(){
+  function clearAllNode(){
     //console.log("clear");
-    $scope.loading = $ionicLoading.show({
+    /*$scope.loading = $ionicLoading.show({
       content: 'All node are cleared',
       showBackdrop: false
     });
     $timeout(function(){
       $scope.loading.hide();
-    },1000);
+    },1000);*/
     clearOverlays();
+    
   }
 
 
@@ -263,26 +268,33 @@ $scope.centerOnMe = function() {
       for (var i = 0; i < markersArray.length; i++ ) {
         markersArray[i].setMap(null);
       }
-      markersArray.length = 0;
+      markersArray = [];
     }
     
 
     function refreshNode(){
       
       setInterval(function(){
+        clearAllNode();
+            getNode();
+
         $http.post('http://localhost:3000/api/updateNode', {
-          
-          //msg:'hello word!'
-
+            UUID: "f6a0fd1452f8f736",
+          loc:{
+            type: "Point",
+            coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
+          },
+              
         })
-        .success(function(data, status, headers, config) {
-            
-            //console.log(data);
 
+        .success(function(data, status, headers, config) {            
+            console.log(data);
+            
         })
         .error(function(data, status, headers, config) {
             
         });
+       
       },5000);
 
     }    
