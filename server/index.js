@@ -25,9 +25,9 @@ app.all('/*', function (req, res, next) {
 http.listen(port, function () {
 	console.log("server is running now at http://localhost:"+port);
 
-	//console.log(timestamp)
-	//timeStampTime();		
+	//console.log(timestamp)	
 	updateNode();
+	//timeStampTime();	
 });
 
 
@@ -57,10 +57,8 @@ app.get('/api/allPos',function(req,res){      //sent data from server to app.js 
 
 
 app.get('/api/nodeByDomain',function(req,res){      //sent data from server to app.js (pass docs) 
-	//console.log(req);
-
 	db.node.find({domain : { $exists : true }, loc : {$exists : true}},function(err,node){   //query database	
-			res.send(node);
+			res.send(node);			
 	});  
 });
 
@@ -75,12 +73,14 @@ app.get('/api/nodeMark',function(req,res){
 
 
 app.post('/api/shareNode',function(req,res){
-	//console.log(req.body);
+	console.log(req.body);
 	db.node.insert((req.body),function(err,data){		
 		//res.send(data);
 	});
+
 	res.send(req.body);
 });
+
 
 app.post('/api/updateNode',function(req,res){
 	
@@ -99,10 +99,11 @@ app.post('/api/updateNode',function(req,res){
 					multi: true
 				}
 			);
+			res.send("Updat Success");
 });
 
 
-//for Server Update
+//for Server Update 
 function updateNode(){
 	setInterval(function(){
 	db.node.find({},function(err, node){
@@ -115,6 +116,7 @@ function updateNode(){
 					$set:
 				      {
 				        timestamp: parseInt(new Date().getTime()),
+				        loc:{type:"Point",coordinates:[(node[i].loc.coordinates[0]),node[i].loc.coordinates[1]]}
 				      }
 				},
 				{
@@ -127,10 +129,13 @@ function updateNode(){
 }
 
 
+
 function findByTimeStamp(Time){
 	db.node.find({timestamp:{$gte:Time}},function(err,node){
 		allNode = node;
-		console.log(allNode);
+		//console.log("Node At Time >"+Time);
+		//console.log(node);
+
 	});
 }
 
@@ -144,3 +149,8 @@ function timeStampTime(){
 
 
 
+function Posibility(node){
+	db.pos.find({UUID:node.UUID},function(err,posnode){
+		console.log(posnode)
+	})
+}
