@@ -1,6 +1,4 @@
 angular.module('starter.controllers', [])
-
-
 .controller('DomainCtrl', function($scope, $location, DomainsService){
  $scope.domains={}
  $scope.domains.domainbus = false;
@@ -11,7 +9,7 @@ angular.module('starter.controllers', [])
     // console.log("route-net : goMap()");
     // console.log("Bus :"+ params.domainbus)
     // console.log("Tour :"+ params.domaintour)
-    //
+    
     DomainsService.set(params);
     $location.path('/map');
   }
@@ -32,11 +30,14 @@ angular.module('starter.controllers', [])
       'Device Version: '  + device.version  + '<br />';
     }
 
-  })
+
+ 
+})
 
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, $ionicActionSheet, $timeout, $timeout, DomainsService, LocationService) {
+.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, $ionicActionSheet, $timeout, DomainsService, LocationService) {
+  
   var markersArray = [];
   $scope.device = "";
   $scope.myPosition="";
@@ -46,6 +47,11 @@ angular.module('starter.controllers', [])
   //$scope.poss = null;
 
   //console.log($scope.bus);
+
+  //refreshNode();
+
+
+
 
   function locationEnabledSuccessCallback(result) {
     if (result)
@@ -61,7 +67,7 @@ angular.module('starter.controllers', [])
 $scope.mapCreated = function(map) {
   $scope.map = map;
   getNode();
-  $scope.centerOnMe(); 
+  //$scope.centerOnMe(); 
 };
 
 
@@ -89,7 +95,7 @@ $scope.centerOnMe = function() {
 
     }, function (error) {
       alert('Unable to get location: ' + error.message);
-    });
+    },{timeout:10000});
         //end getCurrentPosition
 
   }; //end centerOnMe
@@ -155,7 +161,7 @@ $scope.centerOnMe = function() {
 
     //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
         if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
-          console.log("bus TRUE")
+//          console.log("bus TRUE")
           markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
             map:$scope.map,
@@ -261,7 +267,7 @@ $scope.centerOnMe = function() {
     }
     
 
-    $scope.refreshNode = function(){
+    function refreshNode(){
       
       setInterval(function(){
         $http.post('http://localhost:3000/api/updateNode', {
@@ -271,7 +277,7 @@ $scope.centerOnMe = function() {
         })
         .success(function(data, status, headers, config) {
             
-            console.log(data);
+            //console.log(data);
 
         })
         .error(function(data, status, headers, config) {
@@ -283,3 +289,4 @@ $scope.centerOnMe = function() {
 
 
   })
+
