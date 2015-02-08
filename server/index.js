@@ -89,7 +89,8 @@ app.post('/api/updateNode',function(req,res){
 	db.node.find({},function(err, node){
 		//console.log(allNode.length);
 		for(var i = 0 ; i < node.length ; i++){
-			//console.log(allNode[i].UUID);
+			// console.log("=====================");
+			// console.log(node[i].loc.coordinates[1]);
 			db.node.update(
 				{
 					UUID : node[i].UUID
