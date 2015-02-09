@@ -104,7 +104,7 @@ app.post('/api/updateNode',function(req,res){
 					multi: true
 				}
 			);
-			res.send("Updat Success");
+			res.send("Update Success");
 });
 
 
