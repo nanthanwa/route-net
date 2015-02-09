@@ -164,21 +164,19 @@ function Posibility(node){
 		console.log(posnode)
 	})
 }
-<<<<<<< HEAD
+
 
 
 function updateValue(){
 	data={type:"bus",
 		name:"A43"}
-	db.pos.find({domain:{$elemMatch:{type:data.type,name:data.name}}},function(err,Posnode){
-		
+	db.pos.find({domain:{$elemMatch:data}},function(err,Posnode){		
 		if(Posnode!=[]){
 			for(var i=0;i<Posnode.length;i++){
-				db.pos.update({UUID:Posnode[i].UUID},{$set:{timestamp:1}},{multi:true})
+				db.pos.update({domain:{$elemMatch:data}},{$set:{"domain.$.value":70}},{multi:true})
+				//console.log(Posnode)
 		}
-			console.log(Posnode)
 		}
 	})
 }
-=======
->>>>>>> 85db60f4971552733b984b6c7ec332907b8b84bd
+
