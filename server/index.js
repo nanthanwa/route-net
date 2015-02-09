@@ -114,6 +114,10 @@ function updateNode(){
 	setInterval(function(){
 	db.node.find({},function(err, node){
 		for(var i = 0 ; i < node.length ; i++){
+
+			// console.log("=====================");
+			// console.log(node[i].loc.coordinates[1]);
+
 			db.node.update(
 				{
 					UUID : node[i].UUID
@@ -160,6 +164,7 @@ function Posibility(node){
 		console.log(posnode)
 	})
 }
+<<<<<<< HEAD
 
 
 function updateValue(){
@@ -175,3 +180,5 @@ function updateValue(){
 		}
 	})
 }
+=======
+>>>>>>> 85db60f4971552733b984b6c7ec332907b8b84bd
