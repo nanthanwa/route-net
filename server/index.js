@@ -27,7 +27,8 @@ http.listen(port, function () {
 
 	//console.log(timestamp)	
 	updateNode();
-	//timeStampTime();	
+	//timeStampTime();
+	updateValue();	
 });
 
 
@@ -157,5 +158,20 @@ function timeStampTime(){
 function Posibility(node){
 	db.pos.find({UUID:node.UUID},function(err,posnode){
 		console.log(posnode)
+	})
+}
+
+
+function updateValue(){
+	data={type:"bus",
+		name:"A43"}
+	db.pos.find({domain:{$elemMatch:{type:data.type,name:data.name}}},function(err,Posnode){
+		
+		if(Posnode!=[]){
+			for(var i=0;i<Posnode.length;i++){
+				db.pos.update({UUID:Posnode[i].UUID},{$set:{timestamp:1}},{multi:true})
+		}
+			console.log(Posnode)
+		}
 	})
 }
