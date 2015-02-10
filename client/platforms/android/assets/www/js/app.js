@@ -1,15 +1,18 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    
   });
   //console.log(device);
 
 
 })
+
 .config(function($stateProvider, $urlRouterProvider) {
   
 
@@ -21,11 +24,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
   })
   .state('domain', {
     url: "/domain",
-    templateUrl: "templates/domain.html"
+    templateUrl: "templates/domain.html",
+    controllers: "DomainCtrl"
   })
   .state('map', {
     url: "/map",
-    templateUrl: "templates/map.html"
+    templateUrl: "templates/map.html",
+    controllers: "MapCtrl"
   })
   $urlRouterProvider.otherwise("/domain");
 })
