@@ -1,6 +1,4 @@
 angular.module('starter.controllers', [])
-
-
 .controller('DomainCtrl', function($scope, $location, DomainsService){
  $scope.domains={}
  $scope.domains.domainbus = false;
@@ -36,7 +34,8 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, $ionicActionSheet, $timeout, $timeout, DomainsService, LocationService) {
+.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, $ionicActionSheet, $timeout, DomainsService, LocationService) {
+  
   var markersArray = [];
   $scope.device = "";
   $scope.myPosition="";
@@ -46,6 +45,11 @@ angular.module('starter.controllers', [])
   //$scope.poss = null;
 
   //console.log($scope.bus);
+
+  //refreshNode();
+
+
+
 
   function locationEnabledSuccessCallback(result) {
     if (result)
@@ -61,7 +65,7 @@ angular.module('starter.controllers', [])
 $scope.mapCreated = function(map) {
   $scope.map = map;
   getNode();
-  $scope.centerOnMe(); 
+  //$scope.centerOnMe(); 
 };
 
 
@@ -89,7 +93,7 @@ $scope.centerOnMe = function() {
 
     }, function (error) {
       alert('Unable to get location: ' + error.message);
-    });
+    },{timeout:10000});
         //end getCurrentPosition
 
   }; //end centerOnMe
@@ -155,7 +159,7 @@ $scope.centerOnMe = function() {
 
     //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
         if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
-          console.log("bus TRUE")
+//          console.log("bus TRUE")
           markersArray.push(new google.maps.Marker({
             position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
             map:$scope.map,
@@ -175,7 +179,7 @@ $scope.centerOnMe = function() {
   }
 
   function getNode(){
-    $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
+    $http.get('http://103.245.167.177:3000/api/nodeByDomain').success(function(data){
       $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
@@ -205,7 +209,7 @@ $scope.centerOnMe = function() {
       //console.log($scope.transportRoute);
       var type = (index == 0 ? "bus" : "tour");
       //console.log(type);
-      $http.post('http://localhost:3000/api/shareNode',{
+      $http.post('http://103.245.167.177:3000/api/shareNode',{
 
       UUID: uuid,
       timestamp: parseInt($scope.poss.timestamp),
@@ -261,17 +265,17 @@ $scope.centerOnMe = function() {
     }
     
 
-    $scope.refreshNode = function(){
+    function refreshNode(){
       
       setInterval(function(){
-        $http.post('http://localhost:3000/api/updateNode', {
+        $http.post('http://103.245.167.177:3000/api/updateNode', {
           
           //msg:'hello word!'
 
         })
         .success(function(data, status, headers, config) {
             
-            console.log(data);
+            //console.log(data);
 
         })
         .error(function(data, status, headers, config) {

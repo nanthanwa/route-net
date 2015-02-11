@@ -1,22 +1,28 @@
 <ion-view view-title="Map" ng-controller="MapCtrl">
-  <ion-header-bar class="bar-stable" >
-  <button class="button ion-chevron-left button-positive" ng-click="goDomain()">  Back</button>
+  <ion-header-bar class="bar-stable bar-positive" align-title="center">
   <h1 class="title">Map</h1>
-  <button class="button button-icon ion-android-settings" ng-click="clearAllNode()"></button>
+  <!-- <button class="button button-icon ion-android-settings" ng-click="clearAllNode()"></button> -->
+  <button ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></button>
   </ion-header-bar>
 
-<ion-content scroll="false">
+<ion-content>
 <map on-create="mapCreated(map)"></map>
 
 </ion-content>
 
-<ion-footer-bar class="bar-stable">
-<button ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></button>
-<label class="item item-input">
-  <input type="text" placeholder="แชร์สายรถโดยสาร" size="20" ng-model="transportRoute" >
-</label>
-<!-- <button class="button button-icon ion-android-share" ng-click="shareLocation()"></button> -->
-<button class="button button-icon ion-android-share" ng-click="shareLocation()"></button>
+
+<ion-footer-bar class="tabs bar bar-positive">
+  <a class="tab-item" ng-click="goHome()">
+   <span class="ion-ios-home"></span> Home
+  </a>
+  <a class="tab-item" ng-click="goMap()">
+  <span class="ion-map"></span> Map
+  </a>
+  <a class="tab-item" ng-click="goProfile()">
+  <span class="ion-person"></span> Profile
+  </a>
 </ion-footer-bar>
+
+
 
 </ion-view>

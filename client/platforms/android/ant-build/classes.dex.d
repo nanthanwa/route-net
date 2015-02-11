@@ -1,4 +1,5 @@
 E:\nsc\route-net\client\platforms\android\ant-build\classes.dex : \
+E:\nsc\route-net\client\platforms\android\ant-build\classes\com\collectme\cordova\diagnostic\Diagnostic.class \
 E:\nsc\route-net\client\platforms\android\ant-build\classes\com\ionicframework\appmenu323164\BuildConfig.class \
 E:\nsc\route-net\client\platforms\android\ant-build\classes\com\ionicframework\appmenu323164\CordovaApp.class \
 E:\nsc\route-net\client\platforms\android\ant-build\classes\com\ionicframework\appmenu323164\R$attr.class \
