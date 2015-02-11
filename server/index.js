@@ -209,7 +209,7 @@ function updateValue(nodes){
     	hash[ListCheck[i]] = i;
 	}
 	if(hash.hasOwnProperty(UUID_list)) {
-    	
+    //find array in array array list	
 	}
 	console.log(ListCheck)
 
