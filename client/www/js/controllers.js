@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.controller('DomainCtrl', function($scope, $location, DomainsService){
+.controller('HomeCtrl', function($scope, $location, DomainsService){
  $scope.domains={}
  $scope.domains.domainbus = false;
  $scope.domains.domaintour = false;
@@ -12,6 +12,10 @@ angular.module('starter.controllers', [])
     
     DomainsService.set(params);
     $location.path('/map');
+  }
+
+  $scope.goProfile= function(){
+    $location.path('/profile');
   }
 
   // Wait for device API libraries to load
@@ -51,8 +55,6 @@ angular.module('starter.controllers', [])
   //refreshNode();
 
 
-
-
   function locationEnabledSuccessCallback(result) {
     if (result)
      alert("Location ON");
@@ -68,6 +70,7 @@ $scope.mapCreated = function(map) {
   $scope.map = map;
 
   $scope.centerOnMe();
+
   refreshNode();
 
 };
@@ -91,7 +94,7 @@ $scope.centerOnMe = function() {
       //console.log($scope.poss)
 
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-      $scope.loading.hide();
+      $ionicLoading.hide();
       //console.log(pos.timestamp);
       mymarker();
 
@@ -152,10 +155,15 @@ $scope.centerOnMe = function() {
    };
 
   //Controller for DOMAIN !!
-  $scope.goDomain= function(){
+  $scope.goHome= function(){
     //console.log("route-net : goDomain()");
-    $location.path('/domain');
+    $location.path('/home');
   }
+
+  $scope.goProfile= function(){
+    $location.path('/profile');
+  }
+
 
 
   function mark(data){
@@ -237,7 +245,7 @@ $scope.centerOnMe = function() {
         showBackdrop: false
       });
       $timeout(function(){
-        $scope.loading.hide();
+        $ionicLoading.hide();
       },1000);
 
     })
@@ -275,7 +283,7 @@ $scope.centerOnMe = function() {
     function refreshNode(){
       
       setInterval(function(){
-        clearAllNode();
+            clearAllNode();
             getNode();
 
         $http.post('http://localhost:3000/api/updateNode', {
@@ -295,10 +303,26 @@ $scope.centerOnMe = function() {
             
         });
        
-      },5000);
+      
+       },5000);
 
     }    
 
 
   })
 
+.controller('ProfileCtrl', function($scope, $location, DomainsService){
+  $scope.goMap= function(params){
+    // console.log("route-net : goMap()");
+    // console.log("Bus :"+ params.domainbus)
+    // console.log("Tour :"+ params.domaintour)
+    
+    DomainsService.set(params);
+    $location.path('/map');
+  }
+
+  $scope.goHome= function(){
+    //console.log("route-net : goDomain()");
+    $location.path('/home');
+  }
+})
