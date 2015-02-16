@@ -146,7 +146,7 @@ function updateNode(){
 
 function findByTimeStamp(Time){
 	console.log("TimeSTampppp!!")
-	decValue();
+	//decValue();  //decrete all value
 	db.node.find({timestamp:{$gte:Time}},function(err,node){	
 		db.tmpnode.insert(node,function(){
 			for(var i=0;i<node.length;i++){
@@ -186,7 +186,8 @@ function nearNode(nearnd){
 	},
 	$maxDistance:500
 }},function(err,nodes){
-		updateValue(nodes)		
+		//updateValue(nodes)
+		console.log(nodes)		
 	})	
 }
 
@@ -212,8 +213,9 @@ function updateValue(nodes){
 					,name:node[0].domains[j].name};
 
 			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$elemMatch:data}}]},{$inc:{"domains.$.value":0.05}},{multi:true})
-		}
-		})		
+			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$not:{$elemMatch:data}}}]},{$push:{domains:data}},{multi:true})
+			}
+		})			
 	}
 
 	for(var i = 0 ; i < ListCheck.length; i += 1) {
@@ -230,6 +232,7 @@ function updateValue(nodes){
 					,name:node[0].domains[j].name};
 
 			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$elemMatch:data}}]},{$inc:{"domains.$.value":0.05}},{multi:true})
+			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$not:{$elemMatch:data}}}]},{$push:{domains:data}},{multi:true})
 			}
 		})		
 	}
