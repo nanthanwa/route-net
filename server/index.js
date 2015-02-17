@@ -79,16 +79,17 @@ app.get('/api/nodeMark',function(req,res){
 
 app.post('/api/shareNode',function(req,res){
 	console.log(req.body);
-	/*db.node.insert((req.body),function(err,data){		
-		//res.send(data);
-	});*/
-	db.pos.insert({UUID:req.body.UUID,
-				timestamp:req.body.timestamp,
-				domain:[{type:req.body.domain.type,name:req.body.domain.name,value:60}]},function(err,data){  //can use $push to insert indatabase
-					console.log(data)
-	})
+	db.node.insert((req.body),function(err,data){		
+		res.send(data);
+	});
 
-	res.send(req.body);
+	// db.pos.insert({UUID:req.body.UUID,
+	// 			timestamp:req.body.timestamp,
+	// 			domain:[{type:req.body.domain.type,name:req.body.domain.name,value:60}]},function(err,data){  //can use $push to insert indatabase
+	// 				console.log(data)
+	// })
+
+	//res.send(req.body);
 });
 
 
@@ -188,7 +189,7 @@ function nearNode(nearnd){
 	}},function(err,nodes){
 		console.log("NEARNODE  SUCCESS")
 		//console.log(nodes)
-		updateValue(nodes)		
+		//updateValue(nodes)		
 	})	
 }
 
