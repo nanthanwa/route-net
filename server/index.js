@@ -30,9 +30,10 @@ http.listen(port, function () {
 
 	//console.log(timestamp)	
 	updateNode();
-	timeStampTime();
+	//timeStampTime();
 	//updateValue();	
 	//nearNode();
+	findMasterNode();
 });
 
 
@@ -48,7 +49,7 @@ app.post('/api/allNode', function(req, res){
 }); 
 
 app.get('/api/allMaster',function(req,res){      //sent data from server to app.js (pass docs) 
-	db.master.find({},function(err,master){   //query database
+	db.master.find({'node.timestamp':{$gt:timestamp}},function(err,master){   //query database
 		res.send(master); 
 	});  	
 });     		
@@ -252,3 +253,29 @@ function decValue(){
 function listCheckclear(){
 	ListCheck=[]
 }
+
+
+function findMasterNode(){
+	var MasterNode=[]
+	var tmp={}
+	var tnode={}
+	db.pos.find({'domains.value':{$gt:70}},function(err,node){
+		for(var i=0;i<node.length;i++)
+			for(var j=0;j<node[i].domains.length;j++){
+				if(node[i].domains[j].value>70){
+					console.log(node[i].domains[j].name)
+					tmp=node[i].domains[j];
+					saveMasterNode(node[i],node[i].domains[j]);
+				}
+			}		
+	})
+	
+}
+
+function saveMasterNode(node,value){
+	//console.log(node)
+	db.node.find({UUID:node.UUID},function(err,tnode){
+		db.master.insert({node:tnode[0],pos:value})
+	})
+}
+
