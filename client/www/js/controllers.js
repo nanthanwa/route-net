@@ -1,16 +1,20 @@
 angular.module('starter.controllers', [])
-.controller('HomeCtrl', function($scope, $location, DomainsService){
- $scope.domains={}
- $scope.domains.domainbus = false;
- $scope.domains.domaintour = false;
+.controller('HomeCtrl', function($scope, $ionicLoading, $http, $location, $ionicActionSheet, $timeout, DomainsService, LocationService, $ionicLoading){
+ // $scope.domains={}
+ // $scope.domains.domainbus = false;
+ // $scope.domains.domaintour = false;
   //$scope.allLocation = [];
 
-  $scope.goMap= function(params){
+$scope.model = {};
+$scope.model.transportRoute = null;
+
+
+  $scope.goMap= function(){
     // console.log("route-net : goMap()");
     // console.log("Bus :"+ params.domainbus)
     // console.log("Tour :"+ params.domaintour)
     
-    DomainsService.set(params);
+  //DomainsService.set(params);
     $location.path('/map');
   }
 
@@ -34,14 +38,102 @@ angular.module('starter.controllers', [])
       'Device Version: '  + device.version  + '<br />';
     }
 
+    $scope.shareLocation = function(){
+      show();
+    }
 
- 
+
+  // Triggered on a button click, or some other target
+  function show() {
+
+     // Show the action sheet
+     var hideSheet = $ionicActionSheet.show({
+       buttons: [
+       { text: 'Bus' },
+       { text: 'Tour' }
+       ],
+       titleText: 'Select Domain',
+       cancelText: 'Cancel',
+       cancel: function() {
+            // add cancel code..
+          },
+          buttonClicked: function(index) {
+        if(index == 0){ //bus
+          //console.log("Bus");
+          insert_node(index);
+        }
+        else if(index == 1){ //tour
+          //console.log("Tour");
+          insert_node(index);
+        }
+        return true;
+      }
+    });
+
+   };
+
+   function insert_node(index){
+    $scope.loading = $ionicLoading.show({
+      //content: 'Success',
+      showBackdrop: false
+    });
+
+
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      $scope.poss = pos;
+       //Create Globally unique identifier for google chrome
+       var guid = (function() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+        }
+        return function() {
+          return s4() + s4() + '' + s4() + '' + s4()
+        };
+      })();
+
+      var uuid = guid();
+      
+      //console.log(uuid);
+      //console.log(transportRoute);
+      var type = (index == 0 ? "bus" : "tour");
+      //console.log(index);
+      $http.post('http://103.245.167.177:3000/api/shareNode',{
+
+        UUID: uuid,
+        timestamp: parseInt($scope.poss.timestamp),
+        loc:{
+          type: "Point",
+          coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
+        },
+        domain: {
+          type : type,
+          name : ($scope.model.transportRoute).toString()
+        }
+      })
+      .success(function(data, status, headers, config){
+        //console.log(data.timestamp);
+        //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
+        //console.log(data);
+        $scope.model.transportRoute = null;
+        $ionicLoading.hide();
+        // $timeout(function(){
+        //          
+        // },1000);
+        
+
+      });
+
+    })
+
+  }
 })
 
 
 
-.controller('MapCtrl', function($scope, $ionicLoading, $http, $location, $ionicActionSheet, $timeout, DomainsService, LocationService) {
-  
+.controller('MapCtrl', function($scope, $ionicLoading, $http, $ionicModal, $location, $ionicActionSheet, $timeout, DomainsService, LocationService) {
+
   var markersArray = [];
   $scope.device = "";
   $scope.myPosition="";
@@ -50,11 +142,17 @@ angular.module('starter.controllers', [])
   $scope.bus=DomainsService.get();
   //$scope.poss = null;
 
+  $scope.model = [];
+  $scope.model.transportRoute = null;
+
+  $scope.model.bus = true;
+  $scope.model.tour = true;
   //console.log($scope.bus);
 
   //refreshNode();
 
-
+  infowindow = new google.maps.InfoWindow();
+  
   function locationEnabledSuccessCallback(result) {
     if (result)
      alert("Location ON");
@@ -83,7 +181,7 @@ $scope.centerOnMe = function() {
     }
 
     $scope.loading = $ionicLoading.show({
-      content: 'Getting current location...',
+      //content: 'Getting current location...',
       showBackdrop: false
     });
 
@@ -108,20 +206,30 @@ $scope.centerOnMe = function() {
 
     //mark current location
     function mymarker(){
-      new google.maps.Marker({
+
+      
+
+      var marker = new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
         map:$scope.map,
         icon: "img/current.png"
+      });
 
-      })
+      google.maps.event.addListener(marker, 'mouseover', function() {
+
+          infowindow.setContent("My location");
+          infowindow.open($scope.map, this);
+
+        });
       //console.log($scope.poss.coords.latitude);
       //console.log($scope.poss.coords.longitude);
     }
 
-    $scope.transportRoute = "";
+    $scope.button = [];
 
-    $scope.shareLocation = function(){
+    $scope.button.shareLocation = function(){
       show();
+     // console.log("test");
     }
 
 
@@ -168,43 +276,65 @@ $scope.centerOnMe = function() {
 
   function mark(data){
     //console.log(data.domain.type);
-
+    //console.log(data.domain.name);
     //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
-        if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
+    if(data.domain.type === "bus" && $scope.model.bus == true){
 
-          markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
-            map:$scope.map,
-            icon: "img/bus.png",
-            title:data.domain.name
-          }));
-        }
-        else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+        map:$scope.map,
+        icon: "img/bus.png",
+        title: data.domain.name
+      })
+
+      markersArray.push(marker);
+
+      google.maps.event.addListener(marker, 'mouseover', function() {
+          infowindow.setContent("bus");
+          infowindow.open($scope.map, this);
+        });
+
+    }
+    else if(data.domain.type === "tour" && $scope.model.tour == true){
          // console.log("tour TRUE")
-          markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
-            map:$scope.map,
-            icon: "img/tour.png",
-            title:data.domain.name
-          }));
-        }
 
-  
-  }
+         var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+          map:$scope.map,
+          icon: "img/tour.png",
+          title: data.domain.name
+        })
 
-  function getNode(){
-    $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
-      $scope.node = data;
+         markersArray.push(marker);
+         google.maps.event.addListener(marker, 'mouseover', function() {
+          infowindow.setContent("tour");
+          infowindow.open($scope.map, this);
+        });
+
+
+       }
+
+
+     }
+
+     function getNode(){
+      $http.get('http://103.245.167.177:3000/api/nodeByDomain').success(function(data){
+        $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log($scope.node[i]);
           mark($scope.node[i]);              
         }      
       });
-  }
+    }
 
 
   function insert_node(index){
+     $scope.loading = $ionicLoading.show({
+        //content: 'Success',
+        showBackdrop: false
+      });
+    //console.log(index);
       //Create Globally unique identifier for google chrome
       var guid = (function() {
         function s4() {
@@ -218,12 +348,12 @@ $scope.centerOnMe = function() {
       })();
 
       var uuid = guid();
-      
+
       //console.log(uuid);
-      //console.log($scope.transportRoute);
+      //console.log($scope.model.transportRoute);
       var type = (index == 0 ? "bus" : "tour");
       //console.log(type);
-      $http.post('http://localhost:3000/api/shareNode',{
+      $http.post('http://103.245.167.177:3000/api/shareNode',{
 
       UUID: uuid,
       timestamp: parseInt($scope.poss.timestamp),
@@ -233,20 +363,15 @@ $scope.centerOnMe = function() {
       },
       domain: {
         type : type,
-        name : $scope.transportRoute
+        name : ($scope.model.transportRoute).toString()
       }
     })
     .success(function(data, status, headers, config){
       //console.log(data.timestamp);
       //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
       //console.log(status);
-      $scope.loading = $ionicLoading.show({
-        content: 'Success',
-        showBackdrop: false
-      });
-      $timeout(function(){
-        $ionicLoading.hide();
-      },1000);
+      $ionicLoading.hide();
+      $scope.model.transportRoute = null;
 
     })
       .error(function(data, status, headers, config) {
@@ -265,12 +390,12 @@ $scope.centerOnMe = function() {
     $timeout(function(){
       $scope.loading.hide();
     },1000);*/
-    clearOverlays();
-    
-  }
+clearOverlays();
+
+}
 
 
-  function clearOverlays() {
+function clearOverlays() {
       //console.log(markersArray.length);
       //console.log(markersArray);
       for (var i = 0; i < markersArray.length; i++ ) {
@@ -281,43 +406,63 @@ $scope.centerOnMe = function() {
     
 
     function refreshNode(){
-      
-      setInterval(function(){
-            clearAllNode();
-            getNode();
 
-        $http.post('http://localhost:3000/api/updateNode', {
-            UUID: "f6a0fd1452f8f736",
+      setInterval(function(){
+        clearAllNode();
+        getNode();
+
+        $http.post('http://103.245.167.177:3000/api/updateNode', {
+          UUID: "f6a0fd1452f8f736",
           loc:{
             type: "Point",
             coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
           },
-              
+
         })
 
         .success(function(data, status, headers, config) {            
-            console.log(data);
-            
+          console.log(data);
+
         })
         .error(function(data, status, headers, config) {
-            
+
         });
-       
-      
-       },5000);
+
+
+      },5000);
 
     }    
 
 
-  })
+  $ionicModal.fromTemplateUrl('modal-map', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
 
-.controller('ProfileCtrl', function($scope, $location, DomainsService){
-  $scope.goMap= function(params){
-    // console.log("route-net : goMap()");
-    // console.log("Bus :"+ params.domainbus)
-    // console.log("Tour :"+ params.domaintour)
-    
-    DomainsService.set(params);
+})
+
+.controller('ProfileCtrl', function($scope, $location, $ionicModal, DomainsService){
+  $scope.goMap= function(){
     $location.path('/map');
   }
 
@@ -325,4 +470,30 @@ $scope.centerOnMe = function() {
     //console.log("route-net : goDomain()");
     $location.path('/home');
   }
+
+  $ionicModal.fromTemplateUrl('modal-favorite', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
+
 })

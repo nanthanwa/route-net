@@ -1,16 +1,21 @@
-<ion-view view-title="Domain" ng-controller="HomeCtrl">
-  <ion-header-bar class="bar-stable bar-positive" align-title="center">
+<ion-view view-title="Home" ng-controller="HomeCtrl">
+  <ion-header-bar class="bar-stable bar-positive" align-title="left">
   <h1 class="title">Home</h1>
 </ion-header-bar>
 <ion-content>
-<label><ion-checkbox ng-model="domains.domainbus">รถโดยสารประจำทาง </ion-checkbox></label>
-<label><ion-checkbox ng-model="domains.domaintour">รถโดยสารทางไกล  </ion-checkbox></label>
+  <div class="item item-center item-toggle">
+    เลือกสายรถโดยสารที่ต้องการติดตาม
 
-  <!-- =====================<br>
-  Bus == {{domains.domainbus}}<br>
-  Tour == {{domains.domaintour}}<br>
-  =====================
-  <p id="deviceProperties">Loading device properties...</p> -->
+         <span style="padding-left: 70px">Auto Tracking</span>
+     <label class="toggle toggle-balanced">
+       <input type="checkbox">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+    
+  </div>
+
 <div class="row">
   <div class="col">
     <div class="card">
@@ -45,17 +50,18 @@
   </div>
 </div>
 
-<div class="card">
-  <div class="item item-text-wrap">
-      <label>สายรถที่ต้องการแชร์<input type="number"/></label>
-  </div>
-</div>
-<button class="button button-full button-balanced"><label class="button-icon ion-android-share"></label>Share Location</button>
+ <div class="item item-text-wrap">
+      <!-- <label>สายรถที่ต้องการแชร์</label> -->
+      <input type="number" ng-model="model.transportRoute" placeholder="ระบุสายรถที่ต้องการแชร์" />
+ </div>
+ <br>
+
+<button class="button button-full button-balanced" ng-click="shareLocation()"><label class="button-icon ion-android-share"></label> Share Location</button>
 
 </ion-content>
 
 <ion-footer-bar class="tabs bar-positive">
-  <a class="tab-item" ng-click="goHome()">
+  <a class="tab-item active" ng-click="goHome()">
    <span class="ion-ios-home"></span> Home
   </a>
   <a class="tab-item" ng-click="goMap(domains)">
