@@ -444,6 +444,7 @@ function clearOverlays() {
   });
   var tmp1;
   var tmp2;
+  //test
   $scope.openModal = function() {
     $scope.modal.show();
     tmp1 = $scope.model.bus;
