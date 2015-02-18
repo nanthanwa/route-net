@@ -448,8 +448,15 @@ function clearOverlays() {
   var tmp2;
   $scope.openModal = function() {
     $scope.modal.show();
+    tmp1 = $scope.model.bus;
+    tmp2 = $scope.model.tour;
   };
   $scope.closeModal = function() {
+    $scope.model.bus = tmp1;
+    $scope.model.tour = tmp2;
+    $scope.modal.hide();
+  };
+  $scope.saveModal = function() {
     $scope.modal.hide();
   };
   //Cleanup the modal when we're done with it!
