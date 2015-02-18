@@ -315,13 +315,9 @@ $scope.centerOnMe = function() {
 
 
        }
+  }
 
-
-  function getNode(){
-    $http.get('http://localhost:3000/api/allMaster').success(function(data){
-      $scope.node = data;
-
-
+  
      function getNode(){
       $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
         $scope.node = data;
