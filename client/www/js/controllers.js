@@ -318,7 +318,7 @@ $scope.centerOnMe = function() {
 
     }
 
-
+    //get Master Node
   function getNode(){
     $http.get('http://localhost:3000/api/allMaster').success(function(data){
       $scope.node = data;
@@ -331,6 +331,7 @@ $scope.centerOnMe = function() {
         }      
       });
     }
+
 
 
   function insert_node(index){

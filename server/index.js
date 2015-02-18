@@ -85,9 +85,10 @@ app.post('/api/shareNode',function(req,res){
 	/*db.node.insert((req.body),function(err,data){		
 		//res.send(data);
 	});*/
+	db.pos.remove({UUID:req.body.UUID})
 	db.pos.insert({UUID:req.body.UUID,
 		timestamp:req.body.timestamp,
-					domain:[{type:req.body.domain.type,name:req.body.domain.name,value:60}]},function(err,data){  //can use $push to insert indatabase
+					domain:[{type:req.body.domain.type,name:req.body.domain.name,value:80}]},function(err,data){  //can use $push to insert indatabase
 						console.log(data)
 					})
 
