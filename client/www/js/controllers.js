@@ -278,14 +278,14 @@ $scope.centerOnMe = function() {
 
     //console.log(data.domain.type);
     //console.log(data.domain.name);
-    //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
-    if(data.domain.type === "bus" && $scope.model.bus == true){
+    //console.log(data.node.loc.coordinates[0],data.node.loc.coordinates[1],data.pos.type)
+    if(data.pos.type === "bus" && $scope.model.bus == true){
 
       var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+        position: new google.maps.LatLng(data.node.loc.coordinates[1],data.node.loc.coordinates[0]),
         map:$scope.map,
         icon: "img/bus.png",
-        title: data.domain.name
+        title: data.pos.name
       })
 
       markersArray.push(marker);
@@ -296,15 +296,15 @@ $scope.centerOnMe = function() {
         });
 
     }
-    else if(data.domain.type === "tour" && $scope.model.tour == true){
+    else if(data.pos.type === "tour" && $scope.model.tour == true){
          // console.log("tour TRUE")
 
 
          var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+          position: new google.maps.LatLng(data.node.loc.coordinates[1],data.node.loc.coordinates[0]),
           map:$scope.map,
           icon: "img/tour.png",
-          title: data.domain.name
+          title: data.pos.name
         })
 
          markersArray.push(marker);
@@ -315,16 +315,12 @@ $scope.centerOnMe = function() {
 
 
        }
+    }
 
 
   function getNode(){
     $http.get('http://localhost:3000/api/allMaster').success(function(data){
       $scope.node = data;
-
-
-     function getNode(){
-      $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
-        $scope.node = data;
 
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
@@ -418,7 +414,7 @@ function clearOverlays() {
         getNode();
 
         $http.post('http://localhost:3000/api/updateNode', {
-          UUID: "f6a0fd1452f8f736",
+          UUID: "f6a0fd1452f8f492",
           loc:{
             type: "Point",
             coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
@@ -446,25 +442,12 @@ function clearOverlays() {
   }).then(function(modal) {
     $scope.modal = modal;
   });
-  var tmp1;
-  var tmp2;
   $scope.openModal = function() {
     $scope.modal.show();
-    tmp1 = $scope.model.bus;
-    tmp2 = $scope.model.tour;
-    // console.log($scope.model.bus);
-    // console.log($scope.model.tour);
   };
   $scope.closeModal = function() {
     $scope.modal.hide();
-    $scope.model.bus = tmp1;
-    $scope.model.tour = tmp2;
   };
-
-  $scope.saveModal = function() {
-    $scope.modal.hide();
-  };
-
   //Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
     $scope.modal.remove();

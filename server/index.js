@@ -49,8 +49,9 @@ app.post('/api/allNode', function(req, res){
 }); 
 
 app.get('/api/allMaster',function(req,res){      //sent data from server to app.js (pass docs) 
-	db.master.find({'node.timestamp':{$gt:timestamp}},function(err,master){   //query database
+	db.master.find({},function(err,master){   //query database
 		res.send(master); 
+		//'node.timestamp':{$gt:timestamp}
 	});  	
 });     		
 
@@ -84,15 +85,15 @@ app.post('/api/shareNode',function(req,res){
 	/*db.node.insert((req.body),function(err,data){		
 		//res.send(data);
 	});*/
-db.pos.insert({UUID:req.body.UUID,
-	timestamp:req.body.timestamp,
-				domain:[{type:req.body.domain.type,name:req.body.domain.name,value:60}]},function(err,data){  //can use $push to insert indatabase
-					console.log(data)
-				})
+	db.pos.insert({UUID:req.body.UUID,
+		timestamp:req.body.timestamp,
+					domain:[{type:req.body.domain.type,name:req.body.domain.name,value:60}]},function(err,data){  //can use $push to insert indatabase
+						console.log(data)
+					})
 
-res.send(req.body);
+	res.send(req.body);
 
-});
+	});
 
 //Client
 app.post('/api/updateNode',function(req,res){
@@ -266,6 +267,7 @@ function findMasterNode(){
 	var MasterNode=[]
 	var tmp={}
 	var tnode={}
+	db.master.remove({})
 	db.pos.find({'domains.value':{$gt:70}},function(err,node){
 		for(var i=0;i<node.length;i++)
 			for(var j=0;j<node[i].domains.length;j++){
