@@ -444,6 +444,12 @@ function clearOverlays() {
   }).then(function(modal) {
     $scope.modal = modal;
   });
+<<<<<<< HEAD
+=======
+  var tmp1;
+  var tmp2;
+  //test
+>>>>>>> 3a088d690643e6c8f35c6eb2bdd5a4b334cd3d34
   $scope.openModal = function() {
     $scope.modal.show();
   };
