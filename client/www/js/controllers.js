@@ -167,25 +167,25 @@ $scope.centerOnMe = function() {
 
 
   function mark(data){
-    //console.log(data.domain.type);
+    console.log(data.pos.type);
 
-    //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
-        if(data.domain.type === "bus" && ($scope.bus.domainbus==true)){
+    console.log(data.node.loc.coordinates[0],data.node.loc.coordinates[1],data.pos.type)
+        if(data.pos.type === "bus" && ($scope.bus.domainbus==true)){
 
           markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+            position: new google.maps.LatLng(data.node.loc.coordinates[1],data.node.loc.coordinates[0]),
             map:$scope.map,
             icon: "img/bus.png",
-            title:data.domain.name
+            title:data.pos.name
           }));
         }
-        else if(data.domain.type === "tour" &&($scope.bus.domaintour==true)){
+        else if(data.pos.type === "tour" &&($scope.bus.domaintour==true)){
          // console.log("tour TRUE")
           markersArray.push(new google.maps.Marker({
-            position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
+            position: new google.maps.LatLng(data.node.loc.coordinates[1],data.node.loc.coordinates[0]),
             map:$scope.map,
             icon: "img/tour.png",
-            title:data.domain.name
+            title:data.pos.name
           }));
         }
 
@@ -193,7 +193,7 @@ $scope.centerOnMe = function() {
   }
 
   function getNode(){
-    $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
+    $http.get('http://localhost:3000/api/allMaster').success(function(data){
       $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {

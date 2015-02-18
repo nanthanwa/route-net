@@ -30,10 +30,10 @@ http.listen(port, function () {
 
 	//console.log(timestamp)	
 	updateNode();
-	//timeStampTime();
+	timeStampTime();
 	//updateValue();	
 	//nearNode();
-	findMasterNode();
+	
 });
 
 
@@ -117,6 +117,7 @@ app.post('/api/updateNode',function(req,res){
 //for Server Update 
 function updateNode(){
 	setInterval(function(){
+		findMasterNode();
 		db.node.find({},function(err, node){
 			for(var i = 0 ; i < node.length ; i++){
 
@@ -163,6 +164,7 @@ function findByTimeStamp(Time){
 function timeStampTime(){
 	setInterval(function(){
 		findByTimeStamp(timestamp);	
+		
 		timestamp= new Date().getTime();		
 		console.log(timestamp)
 	},20000);
@@ -188,7 +190,7 @@ function nearNode(nearnd){
 	$maxDistance:500
 }},function(err,nodes){
 		//updateValue(nodes)
-		console.log(nodes)		
+		//console.log(nodes)		
 	})	
 }
 
