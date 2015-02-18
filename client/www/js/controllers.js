@@ -99,7 +99,7 @@ $scope.model.transportRoute = null;
       //console.log(transportRoute);
       var type = (index == 0 ? "bus" : "tour");
       //console.log(index);
-      $http.post('http://103.245.167.177:3000/api/shareNode',{
+      $http.post('http://localhost:3000/api/shareNode',{
 
         UUID: uuid,
         timestamp: parseInt($scope.poss.timestamp),
@@ -318,7 +318,7 @@ $scope.centerOnMe = function() {
      }
 
      function getNode(){
-      $http.get('http://103.245.167.177:3000/api/nodeByDomain').success(function(data){
+      $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
         $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
@@ -353,7 +353,7 @@ $scope.centerOnMe = function() {
       //console.log($scope.model.transportRoute);
       var type = (index == 0 ? "bus" : "tour");
       //console.log(type);
-      $http.post('http://103.245.167.177:3000/api/shareNode',{
+      $http.post('http://localhost:3000/api/shareNode',{
 
       UUID: uuid,
       timestamp: parseInt($scope.poss.timestamp),
@@ -411,7 +411,7 @@ function clearOverlays() {
         clearAllNode();
         getNode();
 
-        $http.post('http://103.245.167.177:3000/api/updateNode', {
+        $http.post('http://localhost:3000/api/updateNode', {
           UUID: "f6a0fd1452f8f736",
           loc:{
             type: "Point",
@@ -440,12 +440,25 @@ function clearOverlays() {
   }).then(function(modal) {
     $scope.modal = modal;
   });
+  var tmp1;
+  var tmp2;
   $scope.openModal = function() {
     $scope.modal.show();
+    tmp1 = $scope.model.bus;
+    tmp2 = $scope.model.tour;
+    // console.log($scope.model.bus);
+    // console.log($scope.model.tour);
   };
   $scope.closeModal = function() {
     $scope.modal.hide();
+    $scope.model.bus = tmp1;
+    $scope.model.tour = tmp2;
   };
+
+  $scope.saveModal = function() {
+    $scope.modal.hide();
+  };
+
   //Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
