@@ -80,6 +80,7 @@ app.get('/api/nodeMark',function(req,res){
 
 app.post('/api/shareNode',function(req,res){
 	console.log(req.body);
+
 	/*db.node.insert((req.body),function(err,data){		
 		//res.send(data);
 	});*/
@@ -90,6 +91,7 @@ db.pos.insert({UUID:req.body.UUID,
 				})
 
 res.send(req.body);
+
 });
 
 //Client
@@ -188,9 +190,12 @@ function nearNode(nearnd){
 		coordinates:[nearnd.loc.coordinates[0],nearnd.loc.coordinates[1]]
 	},
 	$maxDistance:500
+
 }},function(err,nodes){
 		//updateValue(nodes)
+
 		//console.log(nodes)		
+
 	})	
 }
 

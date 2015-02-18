@@ -1,5 +1,5 @@
-<ion-view view-title="Map" ng-controller="ProfileCtrl">
-  <ion-header-bar class="bar-stable bar-positive" align-title="center">
+<ion-view view-title="Profile" ng-controller="ProfileCtrl">
+  <ion-header-bar class="bar-stable bar-positive" align-title="left">
   <h1 class="title">Profile</h1>
   </ion-header-bar>
 
@@ -13,18 +13,15 @@
         <h5>Trust Point</h5>
       </button>
     </div>
-    <button class="button button-block button-small button-outline button-stable">
+    <button class="button button-block button-small button-outline button-stable" ng-click="openModal()">
       Edit Favorites
     </button>
   </div>
 </div>
-
-  <a class="item item-icon-center" href="#">
+  <div class="item">
     My Favorites
-  </a>
+  </div>
 
-<!-- <h2 align-title="center">My Favorites</h2>
- -->
 <div class="row">
   <div class="col">
     <div class="card">
@@ -59,6 +56,73 @@
   </div>
 </div>
 
+<script id="modal-favorite" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-positive">
+      <h1 class="title">Edit Favorites</h1>
+      <button class="button ion-close-round" ng-click="closeModal()"></button>
+    </ion-header-bar>
+    <ion-content>
+    
+      <div class="card">
+        <div class="item item-text-wrap">
+          <ul class="list">
+            <li class="item">
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  ประเภทรถ
+                </div>
+                <select>
+                  <option>Bus</option>
+                  <option>Tour</option>
+                </select>
+              </label>
+            </li>
+            <li class="item">
+              <div class="list">
+                <label class="item item-input ">
+                <div class="input-label">
+                    สายรถ
+                  </div>
+                  <input type="number" min="0">
+                </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="item item-text-wrap">
+          <ul class="list">
+            <li class="item">
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  ประเภทรถ
+                </div>
+                <select>
+                  <option>Bus</option>
+                  <option>Tour</option>
+                </select>
+              </label>
+            </li>
+            <li class="item">
+              <div class="list">
+                <label class="item item-input ">
+                <div class="input-label">
+                    สายรถ
+                  </div>
+                  <input type="number" min="0">
+                </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <button class="button button-full button-balanced">Save</button>
+
+    </ion-content>
+  </ion-modal-view>
+</script>
+
 </ion-content>
 
 
@@ -69,7 +133,7 @@
   <a class="tab-item" ng-click="goMap()">
   <span class="ion-map"></span> Map
   </a>
-  <a class="tab-item" ng-click="goProfile()">
+  <a class="tab-item active" ng-click="goProfile()">
   <span class="ion-person"></span> Profile
   </a>
 </ion-footer-bar>

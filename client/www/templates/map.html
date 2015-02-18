@@ -1,24 +1,77 @@
 <ion-view view-title="Map" ng-controller="MapCtrl">
-  <ion-header-bar class="bar-stable bar-positive" >
-  <button class="button ion-chevron-left button-positive" ng-click="goDomain()">  Back</button>
+  <ion-header-bar class="bar-stable bar-positive" align-title="left">
   <h1 class="title">Map</h1>
-  <button class="button button-icon ion-android-settings" ng-click="clearAllNode()"></button>
+
+  <button class="button button-icon ion-android-settings" ng-click="openModal()"></button>
   </ion-header-bar>
 
-<ion-content scroll="false">
+<ion-content>
 <map on-create="mapCreated(map)"></map>
+{{model.bus}}
+{{model.tour}}
+<script id="modal-map" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-positive">
+      <h1 class="title">Setting</h1>
+      <button class="button ion-close-round" ng-click="closeModal()"></button>
+    </ion-header-bar>
+    <ion-content>
+    
+      <ul class="list">
+
+          <li class="item item-toggle">
+             Bus
+             <label class="toggle toggle-balanced">
+               <input type="checkbox" ng-model="model.bus">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+
+          <li class="item item-toggle">
+             Tour
+             <label class="toggle toggle-balanced">
+               <input type="checkbox" ng-model="model.tour">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+      </ul>
+      <button class="button button-full button-balanced" ng-click="closeModal()">Save</button>
+
+    </ion-content>
+  </ion-modal-view>
+
+</script>
+
 
 </ion-content>
 
-<!-- <ion class="bar bar-subfooter bar-energized">
-	<button class="button button-icon ion-refresh" ng-click="#"></button>
-</ion> -->
-<ion-footer-bar class="bar-positive">
-<button ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></button>
-<input type="text" placeholder="  แชร์สายรถโดยสาร" size="20" ng-model="transportRoute" >
-<button class="button button-icon ion-android-share" ng-click="shareLocation()"></button>
 
+<div class="bar bar-subfooter bar-stable">
+    <div class="item-input-inset">
+        <button ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></button>
+        <label class="item-input-wrapper">
+           <i class="icon ion-ios7-search placeholder-icon"></i>
+          <input ng-model="model.transportRoute" type="search" placeholder="Search">
+        </label>
+        <button class="button button-icon ion-search" ng-click="button.shareLocation()"></button>
+      </div>
+</div>
+
+
+<ion-footer-bar class="tabs bar-positive">
+  <a class="tab-item" ng-click="goHome()">
+   <span class="ion-ios-home"></span> Home
+  </a>
+  <a class="tab-item" ng-click="goMap()">
+  <span class="ion-map active"></span> Map
+  </a>
+  <a class="tab-item" ng-click="goProfile()">
+  <span class="ion-person"></span> Profile
+  </a>
 </ion-footer-bar>
-
 
 </ion-view>
