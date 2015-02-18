@@ -275,6 +275,7 @@ $scope.centerOnMe = function() {
 
 
   function mark(data){
+
     //console.log(data.domain.type);
     //console.log(data.domain.name);
     //console.log(data.loc.coordinates[0],data.loc.coordinates[1],data.domain.type)
@@ -298,6 +299,7 @@ $scope.centerOnMe = function() {
     else if(data.domain.type === "tour" && $scope.model.tour == true){
          // console.log("tour TRUE")
 
+
          var marker = new google.maps.Marker({
           position: new google.maps.LatLng(data.loc.coordinates[1],data.loc.coordinates[0]),
           map:$scope.map,
@@ -315,11 +317,15 @@ $scope.centerOnMe = function() {
        }
 
 
-     }
+  function getNode(){
+    $http.get('http://localhost:3000/api/allMaster').success(function(data){
+      $scope.node = data;
+
 
      function getNode(){
       $http.get('http://localhost:3000/api/nodeByDomain').success(function(data){
         $scope.node = data;
+
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log($scope.node[i]);
