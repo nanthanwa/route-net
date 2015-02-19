@@ -5,9 +5,13 @@ angular.module('starter.controllers', [])
  // $scope.domains.domaintour = false;
   //$scope.allLocation = [];
 
-$scope.model = {};
+$scope.model = [];
 $scope.model.transportRoute = null;
 
+$scope.model.favNum = null;
+$scope.object = null;
+
+  getProfile();
 
   $scope.goMap= function(){
     // console.log("route-net : goMap()");
@@ -99,7 +103,7 @@ $scope.model.transportRoute = null;
       //console.log(transportRoute);
       var type = (index == 0 ? "bus" : "tour");
       //console.log(index);
-      $http.post('http://localhost:3000/api/shareNode',{
+      $http.post('http://103.245.167.177:3000/api/shareNode',{
 
         UUID: uuid,
         timestamp: parseInt($scope.poss.timestamp),
@@ -128,6 +132,24 @@ $scope.model.transportRoute = null;
     })
 
   }
+
+  function getProfile(){
+    $http.post('http://103.245.167.177:3000/api/getProfile',{
+      UUID: "f6a0fd1452f8f736"
+    })
+    .success(function(data, status, headers, config) {            
+          //console.log(data[0].domain.length);
+          $scope.model.favNum = data[0].domain.length;
+          $scope.object = data[0].domain;
+    })
+    .error(function(data, status, headers, config) {
+
+    });
+
+
+
+    }
+
 })
 
 
@@ -320,7 +342,7 @@ $scope.centerOnMe = function() {
 
     //get Master Node
   function getNode(){
-    $http.get('http://localhost:3000/api/allMaster').success(function(data){
+    $http.get('http://103.245.167.177:3000/api/allMaster').success(function(data){
       $scope.node = data;
 
 
@@ -358,7 +380,7 @@ $scope.centerOnMe = function() {
       //console.log($scope.model.transportRoute);
       var type = (index == 0 ? "bus" : "tour");
       //console.log(type);
-      $http.post('http://localhost:3000/api/shareNode',{
+      $http.post('http://103.245.167.177:3000/api/shareNode',{
 
       UUID: uuid,
       timestamp: parseInt($scope.poss.timestamp),
@@ -416,7 +438,7 @@ function clearOverlays() {
         clearAllNode();
         getNode();
 
-        $http.post('http://localhost:3000/api/updateNode', {
+        $http.post('http://103.245.167.177:3000/api/updateNode', {
           UUID: "f6a0fd1452f8f492",
           loc:{
             type: "Point",
@@ -475,7 +497,12 @@ function clearOverlays() {
 
 })
 
-.controller('ProfileCtrl', function($scope, $location, $ionicModal, DomainsService){
+.controller('ProfileCtrl', function($scope, $http, $location, $ionicModal, DomainsService){
+  $scope.model = [];
+  $scope.model.favNum = null;
+  $scope.model.input = [];
+  $scope.object = null;
+  getProfile();
   $scope.goMap= function(){
     $location.path('/map');
   }
@@ -493,8 +520,21 @@ function clearOverlays() {
   });
   $scope.openModal = function() {
     $scope.modal.show();
+    //console.log($scope.model.input);
   };
   $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  $scope.saveModal = function() {
+    // $http.post('http://103.245.167.177:3000/api/saveProfile',{
+    //   UUID: "f6a0fd1452f8f736"
+    // })
+    // .success(function(data, status, headers, config) {            
+    //       console.log(data[0]);
+    // })
+    // .error(function(data, status, headers, config) {
+
+    // });
     $scope.modal.hide();
   };
   //Cleanup the modal when we're done with it!
@@ -509,5 +549,30 @@ function clearOverlays() {
   $scope.$on('modal.removed', function() {
     // Execute action
   });
+
+  
+  function getProfile(){
+    $http.post('http://103.245.167.177:3000/api/getProfile',{
+      UUID: "f6a0fd1452f8f736"
+    })
+    .success(function(data, status, headers, config) {            
+          //console.log(data[0].domain.length);
+          $scope.model.favNum = data[0].domain.length;
+          $scope.object = data[0].domain;
+          $scope.trust = data[0].trust;
+          //console.log(data[0].domain);
+          for(var i = 0 ; i < data[0].domain.length ; i++){
+            $scope.model.input.push(data[0].domain[i]); 
+          }
+          
+    })
+    .error(function(data, status, headers, config) {
+
+    });
+
+
+
+    }
+
 
 })

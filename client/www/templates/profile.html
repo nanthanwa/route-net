@@ -9,7 +9,7 @@
     <img src="img/business-person-blue-md.png">
     <div class="row">
       <button class="col button button-clear">
-        <h2>12</h2>
+        <h2>{{trust}}</h2>
         <h5>Trust Point</h5>
       </button>
     </div>
@@ -22,37 +22,13 @@
     My Favorites
   </div>
 
-<div class="row">
+<div class="row" ng-repeat="item in object">
   <div class="col">
     <div class="card">
       <button class="button-block item item-text-wrap item-energized">
-        A12
+        {{item.name}}
       </button>
   </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <button class="button-block item item-text-wrap item-energized">
-        A13
-      </button>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col">
-    <div class="card">
-      <button class="button-block item item-text-wrap item-energized">
-        B14
-      </button>
-  </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <button class="button-block item item-text-wrap item-energized">
-        B15
-      </button>
-    </div>
   </div>
 </div>
 
@@ -63,8 +39,8 @@
       <button class="button ion-close-round" ng-click="closeModal()"></button>
     </ion-header-bar>
     <ion-content>
-    
-      <div class="card">
+
+      <div class="card" ng-repeat="(index , item) in object">
         <div class="item item-text-wrap">
           <ul class="list">
             <li class="item">
@@ -73,8 +49,8 @@
                   ประเภทรถ
                 </div>
                 <select>
-                  <option>Bus</option>
-                  <option>Tour</option>
+                  <option ng-selected="item.type==='bus'">Bus</option>
+                  <option ng-selected="item.type==='tour'">Tour</option>
                 </select>
               </label>
             </li>
@@ -84,40 +60,14 @@
                 <div class="input-label">
                     สายรถ
                   </div>
-                  <input type="number" min="0">
+                  <input type="text" min="0" value="{{item.name}}">
                 </label>
             </li>
           </ul>
         </div>
       </div>
-      
-      <div class="card">
-        <div class="item item-text-wrap">
-          <ul class="list">
-            <li class="item">
-              <label class="item item-input item-select">
-                <div class="input-label">
-                  ประเภทรถ
-                </div>
-                <select>
-                  <option>Bus</option>
-                  <option>Tour</option>
-                </select>
-              </label>
-            </li>
-            <li class="item">
-              <div class="list">
-                <label class="item item-input ">
-                <div class="input-label">
-                    สายรถ
-                  </div>
-                  <input type="number" min="0">
-                </label>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <button class="button button-full button-balanced">Save</button>
+
+      <button class="button button-full button-balanced" ng-click="saveModal()">Save</button>
 
     </ion-content>
   </ion-modal-view>

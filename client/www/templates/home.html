@@ -5,48 +5,15 @@
 <ion-content>
   <div class="item item-center item-toggle">
     เลือกสายรถโดยสารที่ต้องการติดตาม
-
-         <span style="padding-left: 70px">Auto Tracking</span>
-     <label class="toggle toggle-balanced">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-    
   </div>
 
-<div class="row">
+<div class="row" ng-repeat="item in object">
   <div class="col">
     <div class="card">
       <button class="button-block item item-text-wrap item-energized">
-        A12
+        {{item.name}}
       </button>
   </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <button class="button-block item item-text-wrap item-energized">
-        A13
-      </button>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col">
-    <div class="card">
-      <button class="button-block item item-text-wrap item-energized">
-        B14
-      </button>
-  </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <button class="button-block item item-text-wrap item-energized">
-        B15
-      </button>
-    </div>
   </div>
 </div>
 

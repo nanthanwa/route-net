@@ -6,7 +6,7 @@ var underscore = require('underscore');
 var app = express();
 var http = require('http').Server(app);
 var port = 3000;
-var db = mongojs('node',['master','node','pos','tmpnode']);
+var db = mongojs('node',['master','node','pos','tmpnode','profile']);
 
 app.use(express.static(__dirname + '/public'));
 
@@ -289,3 +289,10 @@ function saveMasterNode(node,value){
 	})
 }
 
+
+app.post('/api/getProfile',function(req,res){
+	//console.log(req.body);
+	db.profile.find(req.body,function(err,node){   //query database		
+		res.send(node); 
+	});  
+});
