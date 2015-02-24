@@ -33,7 +33,7 @@ angular.module('starter.controllers')
     //console.log($scope.object);
     //console.log($scope.model.line);
     $http.post('http://103.245.167.177:3000/api/saveProfile',{
-      UUID: "f6a0fd1452f8f736",
+      UUID: "f6a0fd1452a8f404",
       domain: $scope.object
     })
     .success(function(data, status, headers, config) {            
@@ -60,12 +60,12 @@ angular.module('starter.controllers')
   
   function getProfile(){
     $http.post('http://103.245.167.177:3000/api/getProfile',{
-      UUID: "f6a0fd1452f8f736"
+      UUID: "f6a0fd1452a8f404"
     })
     .success(function(data, status, headers, config) {            
           //console.log(data[0].domain.length);
-          $scope.model.favNum = data[0].domain.length;
-          $scope.object = data[0].domain;
+          $scope.model.favNum = data[0].domains.length;
+          $scope.object = data[0].domains;
           $scope.trust = data[0].trust;
 
           function chunk(arr, size) {

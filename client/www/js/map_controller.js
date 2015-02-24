@@ -18,7 +18,7 @@ angular.module('starter.controllers')
   //console.log($scope.bus);
 
   //refreshNode();
-  
+
   var interval;
 
   infowindow = new google.maps.InfoWindow();
@@ -191,8 +191,6 @@ $scope.centerOnMe = function() {
   function getNode(){
     $http.get('http://103.245.167.177:3000/api/allMaster').success(function(data){
       $scope.node = data;
-
-
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log($scope.node[i]);
@@ -286,7 +284,7 @@ function clearOverlays() {
         getNode();
 
         $http.post('http://103.245.167.177:3000/api/updateNode', {
-          UUID: "f6a0fd1452f8f492",
+          UUID: "f6a0fd1452a8f404",
           loc:{
             type: "Point",
             coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
