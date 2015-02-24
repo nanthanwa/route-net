@@ -1,16 +1,19 @@
 <ion-view view-title="Home" ng-controller="HomeCtrl">
   <ion-header-bar class="bar-stable bar-positive" align-title="left">
   <h1 class="title">Home</h1>
+  <div class="buttons">
+    <button class="button" ng-click="statusButton()"><span class="ion-android-notifications-none"></span> {{model.status}}</button>
+  </div>
 </ion-header-bar>
 <ion-content>
   <div class="item item-center item-toggle">
     เลือกสายรถโดยสารที่ต้องการติดตาม
   </div>
 
-<div class="row" ng-repeat="item in object">
-  <div class="col">
+<div class="row" ng-repeat="(index , rows) in chunkedData">
+  <div class="col" ng-repeat="item in rows">
     <div class="card">
-      <button class="button-block item item-text-wrap item-energized">
+      <button class="button-block item item-text-wrap item-energized" ng-click="fastTrack(index, $index)">
         {{item.name}}
       </button>
   </div>
@@ -24,6 +27,14 @@
  <br>
 
 <button class="button button-full button-balanced" ng-click="shareLocation()"><label class="button-icon ion-android-share"></label> Share Location</button>
+
+<div class="item item-text-wrap">
+      <!-- <label>สายรถที่ต้องการแชร์</label> -->
+      <input type="number" ng-model="model.transportFind" placeholder="ระบุสายรถที่ต้องการค้นหา" />
+ </div>
+ <br>
+
+<button class="button button-full button-balanced" ng-click="find()"><label class="button-icon ion-ios-search"></label> Find Transport</button>
 
 </ion-content>
 

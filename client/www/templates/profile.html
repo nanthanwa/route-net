@@ -22,8 +22,8 @@
     My Favorites
   </div>
 
-<div class="row" ng-repeat="item in object">
-  <div class="col">
+<div class="row" ng-repeat="rows in chunkedData">
+  <div class="col" ng-repeat="item in rows">
     <div class="card">
       <button class="button-block item item-text-wrap item-energized">
         {{item.name}}
@@ -41,6 +41,11 @@
     <ion-content>
 
       <div class="card" ng-repeat="(index , item) in object">
+
+      <div class="item item-divider">
+          #{{$index+1}} <button style="float: right" class="button button-small button-assertive" ng-click="removeCard($index)">X</button></div>
+      
+
         <div class="item item-text-wrap">
           <ul class="list">
             <li class="item">
@@ -48,9 +53,9 @@
                 <div class="input-label">
                   ประเภทรถ
                 </div>
-                <select>
-                  <option ng-selected="item.type==='bus'">Bus</option>
-                  <option ng-selected="item.type==='tour'">Tour</option>
+                <select ng-model="model.type[$index]">
+                  <option ng-selected="item.type==='bus'" value="bus">Bus</option>
+                  <option ng-selected="item.type==='tour'" value="tour">Tour</option>
                 </select>
               </label>
             </li>
@@ -60,7 +65,7 @@
                 <div class="input-label">
                     สายรถ
                   </div>
-                  <input type="text" min="0" value="{{item.name}}">
+                  <input type="text" min="0" ng-model="item.name">
                 </label>
             </li>
           </ul>
