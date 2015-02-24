@@ -17,8 +17,9 @@ angular.module('starter.controllers')
   $scope.model.tour = true;
   //console.log($scope.bus);
 
+
   refreshNode();
-  
+
   var interval;
 
   infowindow = new google.maps.InfoWindow();
@@ -193,8 +194,6 @@ $scope.centerOnMe = function() {
   function getNode(){
     $http.get('http://103.245.167.177:3000/api/allMaster').success(function(data){
       $scope.node = data;
-
-
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log($scope.node[i]);
@@ -286,6 +285,7 @@ function refreshNode(){
       intervalMap = $interval(function() {
         clearAllNode();
         getNode();
+
       },5000);
 
 }    

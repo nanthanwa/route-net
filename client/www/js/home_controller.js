@@ -115,7 +115,7 @@ var interval;
           type: "Point",
           coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
         },
-        domain: {
+        domains: {
           type : type,
           name : ($scope.model.transportRoute).toString()
         }
@@ -142,7 +142,7 @@ var interval;
       UUID: "f6a0fd1452a8f404"
     })
     .success(function(data, status, headers, config) {            
-          //console.log(data[0].domain.length);
+
           $scope.model.favNum = data[0].domains.length;
           $scope.object = data[0].domains;
 
@@ -197,6 +197,7 @@ var interval;
         $ionicLoading.hide();
         $scope.model.status = "Tracking";
         refreshNode();
+        //console.log(data);
         });
       }
     )};
@@ -225,7 +226,13 @@ var interval;
     $scope.statusButton = function(){
       $scope.model.status = "Idle";
       $interval.cancel(interval);
-    } 
+
+    }
+
+    $scope.find = function(){
+      $scope.model.status = "Looking for " + $scope.model.transportFind;
+    }
+
 })
 
 
