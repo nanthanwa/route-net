@@ -17,12 +17,12 @@ angular.module('starter.controllers')
   $scope.model.tour = true;
   //console.log($scope.bus);
 
-  //refreshNode();
+  refreshNode();
   
   var interval;
 
   infowindow = new google.maps.InfoWindow();
-  
+    
   function locationEnabledSuccessCallback(result) {
     if (result)
      alert("Location ON");
@@ -39,7 +39,7 @@ $scope.mapCreated = function(map) {
 
   $scope.centerOnMe();
 
-  refreshNode();
+  
 
 };
 
@@ -136,16 +136,18 @@ $scope.centerOnMe = function() {
   $scope.goHome= function(){
     //console.log("route-net : goDomain()");
     $location.path('/home');
+    $interval.cancel(intervalMap);
   }
 
   $scope.goProfile= function(){
     $location.path('/profile');
+    $interval.cancel(intervalMap);
   }
 
 
 
   function mark(data){
-
+    
     //console.log(data.node.domain.type);
     //console.log(data.node.loc.coordinates[0],data.node.loc.coordinates[1],data.pos.type)
     if(data.pos.type === "bus" && $scope.model.bus == true){
@@ -279,32 +281,14 @@ function clearOverlays() {
     }
     
 
-    function refreshNode(){
+function refreshNode(){
 
-      interval = $interval(function() {
+      intervalMap = $interval(function() {
         clearAllNode();
         getNode();
-
-        $http.post('http://103.245.167.177:3000/api/updateNode', {
-          UUID: "f6a0fd1452f8f492",
-          loc:{
-            type: "Point",
-            coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
-          },
-        })
-
-        .success(function(data, status, headers, config) {            
-          console.log(data);
-
-        })
-        .error(function(data, status, headers, config) {
-
-        });
-
-
       },5000);
 
-    }    
+}    
 
 
   $ionicModal.fromTemplateUrl('modal-map', {

@@ -109,7 +109,7 @@ var interval;
       //console.log(index);
       $http.post('http://103.245.167.177:3000/api/shareNode',{
 
-        UUID: "f6a0fd1452f8f736",
+        UUID: "f6a0fd1452a8f404",
         timestamp: parseInt($scope.poss.timestamp),
         loc:{
           type: "Point",
@@ -139,12 +139,12 @@ var interval;
 
   function getProfile(){
     $http.post('http://103.245.167.177:3000/api/getProfile',{
-      UUID: "f6a0fd1452f8f736"
+      UUID: "f6a0fd1452a8f404"
     })
     .success(function(data, status, headers, config) {            
           //console.log(data[0].domain.length);
-          $scope.model.favNum = data[0].domain.length;
-          $scope.object = data[0].domain;
+          $scope.model.favNum = data[0].domains.length;
+          $scope.object = data[0].domains;
 
           function chunk(arr, size) {
             var newArr = [];
@@ -182,13 +182,13 @@ var interval;
       });
 
       $http.post('http://103.245.167.177:3000/api/shareNode',{
-        UUID: "f6a0fd1452f8f736",
+        UUID: "f6a0fd1452a8f404",
         timestamp: parseInt($scope.poss.timestamp),
         loc:{
           type: "Point",
           coordinates :[$scope.poss.coords.longitude, $scope.poss.coords.latitude]
         },
-        domain: {
+        domains: {
           type : type,
           name : name.toString()
         }
@@ -205,7 +205,7 @@ var interval;
     function refreshNode(){
       interval = $interval(function() {
         $http.post('http://103.245.167.177:3000/api/updateNode', {
-          UUID: "f6a0fd1452f8f736",
+          UUID: "f6a0fd1452a8f404",
           loc:{
             type: "Point",
             coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
@@ -225,7 +225,7 @@ var interval;
     $scope.statusButton = function(){
       $scope.model.status = "Idle";
       $interval.cancel(interval);
-    }
+    } 
 })
 
 
