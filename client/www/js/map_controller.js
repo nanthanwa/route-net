@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
 
 .controller('MapCtrl', function($scope, $ionicLoading, $http, $interval, $ionicModal, $location, $ionicActionSheet, $timeout, DomainsService, LocationService) {
-
+  var filter;
   var markersArray = [];
   $scope.device = "";
   $scope.myPosition="";
@@ -24,7 +24,7 @@ angular.module('starter.controllers')
   var interval;
 
   infowindow = new google.maps.InfoWindow();
-    
+
   function locationEnabledSuccessCallback(result) {
     if (result)
      alert("Location ON");
@@ -77,7 +77,7 @@ $scope.centerOnMe = function() {
     //mark current location
     function mymarker(){
 
-      
+
 
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng($scope.poss.coords.latitude,$scope.poss.coords.longitude),
@@ -87,10 +87,10 @@ $scope.centerOnMe = function() {
 
       google.maps.event.addListener(marker, 'mouseover', function() {
 
-          infowindow.setContent("My location");
-          infowindow.open($scope.map, this);
+        infowindow.setContent("My location");
+        infowindow.open($scope.map, this);
 
-        });
+      });
       //console.log($scope.poss.coords.latitude);
       //console.log($scope.poss.coords.longitude);
     }
@@ -100,7 +100,7 @@ $scope.centerOnMe = function() {
     $scope.button.shareLocation = function(){
       show();
      // console.log("test");
-    }
+   }
 
 
   // Triggered on a button click, or some other target
@@ -147,27 +147,28 @@ $scope.centerOnMe = function() {
 
 
   function mark(data){
-    
+
     //console.log(data.node.domain.type);
     //console.log(data.node.loc.coordinates[0],data.node.loc.coordinates[1],data.pos.type)
-    if(data.pos.type === "bus" && $scope.model.bus == true){
+    
+      if(data.pos.type === "bus" && $scope.model.bus == true){
 
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(data.node.loc.coordinates[1],data.node.loc.coordinates[0]),
-        map:$scope.map,
-        icon: "img/bus.png",
-        title: data.pos.name
-      })
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(data.node.loc.coordinates[1],data.node.loc.coordinates[0]),
+          map:$scope.map,
+          icon: "img/bus.png",
+          title: data.pos.name
+        })
 
-      markersArray.push(marker);
+        markersArray.push(marker);
 
-      google.maps.event.addListener(marker, 'mouseover', function() {
+        google.maps.event.addListener(marker, 'mouseover', function() {
           infowindow.setContent(data.pos.type + " " + data.pos.name);
           infowindow.open($scope.map, this);
         });
 
-    }
-    else if(data.pos.type === "tour" && $scope.model.tour == true){
+      }
+      else if(data.pos.type === "tour" && $scope.model.tour == true){
          // console.log("tour TRUE")
 
 
@@ -186,24 +187,29 @@ $scope.centerOnMe = function() {
 
 
        }
-
-    }
+   }
 
     //get Master Node
-  function getNode(){
-    $http.get('http://103.245.167.177:3000/api/allMaster').success(function(data){
-      $scope.node = data;
+    function getNode(){
+      $http.get('http://103.245.167.177:3000/api/allMaster').success(function(data){
+        $scope.node = data;
         //console.log(data);
         for (var i = 0; i < $scope.node.length; i++) {
           //console.log($scope.node[i]);
-          mark($scope.node[i]);              
-        }      
+          //console.log($scope.model.transportRoute,$scope.node[i].pos.name)
+          if(filter==null || filter==""){
+            mark($scope.node[i]); 
+          }
+          else if($scope.node[i].pos.name==filter)
+            mark($scope.node[i]);          
+          }
+
       });
     }
 
 
 
-  function insert_node(index){
+    function insert_node(index){
      $scope.loading = $ionicLoading.show({
         //content: 'Success',
         showBackdrop: false
@@ -229,18 +235,18 @@ $scope.centerOnMe = function() {
       //console.log(type);
       $http.post('http://103.245.167.177:3000/api/shareNode',{
 
-      UUID: uuid,
-      timestamp: parseInt($scope.poss.timestamp),
-      loc:{
-        type: "Point",
-        coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
-      },
-      domain: {
-        type : type,
-        name : ($scope.model.transportRoute).toString()
-      }
-    })
-    .success(function(data, status, headers, config){
+        UUID: uuid,
+        timestamp: parseInt($scope.poss.timestamp),
+        loc:{
+          type: "Point",
+          coordinates :[$scope.poss.coords.longitude,$scope.poss.coords.latitude]
+        },
+        domain: {
+          type : type,
+          name : ($scope.model.transportRoute).toString()
+        }
+      })
+      .success(function(data, status, headers, config){
       //console.log(data.timestamp);
       //alert(data.transportRoute+"<br>"+data.timestamp+"<br>"+data.latitude+"<br>"+data.longitude);
       //console.log(status);
@@ -268,6 +274,14 @@ clearOverlays();
 
 }
 
+$scope.filterCar = function(){
+  console.log("Filter")
+  console.log($scope.model.transportRoute)
+  filter=$scope.model.transportRoute;
+  clearAllNode();
+  getNode();
+}
+
 
 function clearOverlays() {
       //console.log(markersArray.length);
@@ -279,7 +293,7 @@ function clearOverlays() {
     }
     
 
-function refreshNode(){
+    function refreshNode(){
 
       intervalMap = $interval(function() {
         clearAllNode();
@@ -289,30 +303,30 @@ function refreshNode(){
 
       },5000);
 
-}    
+    }    
 
 
-  $ionicModal.fromTemplateUrl('modal-map', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  var tmp1;
-  var tmp2;
-  $scope.openModal = function() {
-    $scope.modal.show();
-    tmp1 = $scope.model.bus;
-    tmp2 = $scope.model.tour;
-  };
-  $scope.closeModal = function() {
-    $scope.model.bus = tmp1;
-    $scope.model.tour = tmp2;
-    $scope.modal.hide();
-  };
-  $scope.saveModal = function() {
-    $scope.modal.hide();
-  };
+    $ionicModal.fromTemplateUrl('modal-map', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    var tmp1;
+    var tmp2;
+    $scope.openModal = function() {
+      $scope.modal.show();
+      tmp1 = $scope.model.bus;
+      tmp2 = $scope.model.tour;
+    };
+    $scope.closeModal = function() {
+      $scope.model.bus = tmp1;
+      $scope.model.tour = tmp2;
+      $scope.modal.hide();
+    };
+    $scope.saveModal = function() {
+      $scope.modal.hide();
+    };
   //Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
