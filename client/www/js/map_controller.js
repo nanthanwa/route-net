@@ -16,7 +16,7 @@ angular.module('starter.controllers')
   $scope.model.bus = true;
   $scope.model.tour = true;
   //console.log($scope.bus);
-
+  getNode();
   refreshNode();
 
 
@@ -161,7 +161,7 @@ $scope.centerOnMe = function() {
       markersArray.push(marker);
 
       google.maps.event.addListener(marker, 'mouseover', function() {
-          infowindow.setContent(data.node.domain.type + " " + data.node.domain.name);
+          infowindow.setContent(data.pos.type + " " + data.pos.name);
           infowindow.open($scope.map, this);
         });
 
@@ -179,7 +179,7 @@ $scope.centerOnMe = function() {
 
          markersArray.push(marker);
          google.maps.event.addListener(marker, 'mouseover', function() {
-          infowindow.setContent(data.node.domain.type + " " + data.node.domain.name);
+          infowindow.setContent(data.pos.type + " " + data.pos.name);
           infowindow.open($scope.map, this);
         });
 
