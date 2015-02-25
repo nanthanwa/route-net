@@ -17,7 +17,9 @@ angular.module('starter.controllers')
   $scope.model.tour = true;
   //console.log($scope.bus);
 
+  getNode();
   refreshNode();
+
 
   var interval;
 
@@ -37,9 +39,7 @@ angular.module('starter.controllers')
 $scope.mapCreated = function(map) {
   $scope.map = map;
 
-  $scope.centerOnMe();
-
-  
+  $scope.centerOnMe();  
 
 };
 
@@ -162,7 +162,7 @@ $scope.centerOnMe = function() {
       markersArray.push(marker);
 
       google.maps.event.addListener(marker, 'mouseover', function() {
-          infowindow.setContent(data.node.domain.type + " " + data.node.domain.name);
+          infowindow.setContent(data.pos.type + " " + data.pos.name);
           infowindow.open($scope.map, this);
         });
 
@@ -180,7 +180,7 @@ $scope.centerOnMe = function() {
 
          markersArray.push(marker);
          google.maps.event.addListener(marker, 'mouseover', function() {
-          infowindow.setContent(data.node.domain.type + " " + data.node.domain.name);
+          infowindow.setContent(data.pos.type + " " + data.pos.name);
           infowindow.open($scope.map, this);
         });
 
@@ -284,7 +284,9 @@ function refreshNode(){
       intervalMap = $interval(function() {
         clearAllNode();
         getNode();
-        console.log("test");
+
+        console.log("refreshNode")
+
       },5000);
 
 }    
