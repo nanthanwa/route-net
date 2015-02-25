@@ -12,6 +12,7 @@ $scope.model.favNum = null;
 $scope.object = null;
 $scope.model.status = "Idle";
 
+
 var interval;
 
 
@@ -226,14 +227,39 @@ var interval;
     $scope.statusButton = function(){
       $scope.model.status = "Idle";
       $interval.cancel(interval);
-
+      $interval.cancel(intervalfind);
     }
 
     $scope.find = function(){
       $scope.model.status = "Looking for " + $scope.model.transportFind;
-    }
+      intervalfind=$interval(function(){      
+      navigator.geolocation.getCurrentPosition(function (pos){
+      $http.post('http://103.245.167.177:3000/api/lookingfor',{
+        lookingfor:$scope.model.transportFind,
+        loc:{
+          type: "Point",
+          coordinates :[pos.coords.longitude, pos.coords.latitude]
+        }
+
+      })
+      .success(function(data,status,headers,config){
+        console.log(data.length)
+        if(data.length!=0){
+          alert($scope.model.transportFind+" is Coming")
+          $scope.statusButton();
+        }
+      })
+    })
+    },3000);
+  };
+
+  function stopFind(){
+    $scope.model.status = "Idle";
+    $interval.cancel(intervalfind);
+  }
 
 })
+  
 
 
 

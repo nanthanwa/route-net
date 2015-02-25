@@ -17,8 +17,8 @@ angular.module('starter.controllers')
   $scope.model.tour = true;
   //console.log($scope.bus);
 
-
   refreshNode();
+
 
   var interval;
 
@@ -38,9 +38,7 @@ angular.module('starter.controllers')
 $scope.mapCreated = function(map) {
   $scope.map = map;
 
-  $scope.centerOnMe();
-
-  
+  $scope.centerOnMe();  
 
 };
 
@@ -285,7 +283,7 @@ function refreshNode(){
       intervalMap = $interval(function() {
         clearAllNode();
         getNode();
-
+        console.log("refreshNode")
       },5000);
 
 }    
