@@ -84,7 +84,11 @@ app.post('/api/shareNode',function(req,res){
 
 	//save new node in table node
 	db.node.remove({UUID:req.body.UUID})
+<<<<<<< HEAD
 	db.node.insert(req.body)
+=======
+	//db.node.insert({req.body})
+>>>>>>> 72b26ba2a7614c5004c66f60b22d544e02e587df
 
 	db.pos.remove({UUID:req.body.UUID})
 	db.pos.insert({
@@ -94,7 +98,11 @@ app.post('/api/shareNode',function(req,res){
 				{
 					type:req.body.domains.type,
 					name:req.body.domains.name,
+<<<<<<< HEAD
 					value:80
+=======
+					value:70
+>>>>>>> 72b26ba2a7614c5004c66f60b22d544e02e587df
 				}
 			]
 		},
@@ -309,10 +317,13 @@ app.post('/api/getProfile',function(req,res){
 
 
 app.post('/api/removeFav',function(req,res){
-	console.log(req.body.UUID);
-	//var domains = db.profile.findOne({"UUID": req.body.UUID}).domains;
-	// domains.splice(req.body.index, 1);  
-	// db.profile.update({"UUID": req.body.UUID}, {"$set" : {"domains" : domains}});
+
+
+	//console.log(req.body);
+	db.profile.update({UUID : req.body.UUID}, {
+		$pull : {"domains" : {"name": req.body.name, "type": req.body.type}}
+	});
+
 });
 
 
@@ -329,4 +340,31 @@ app.post('/api/lookingfor',function(req,res){
 	console.log(node)
 	res.send(node);	
 	});	
+
 });
+
+app.post('/api/saveProfile',function(req,res){
+	//console.log(req.body);
+	db.profile.find({UUID: req.body.UUID},function(err, node){
+		console.log(node[0].domains[req.body.index]);
+		node[0].domains[req.body.index].type = req.body.type;
+		node[0].domains[req.body.index].name = req.body.name;
+		db.profile.update({UUID: req.body.UUID},{
+			$set: {domains: node[0].domains}
+		});
+	});
+	
+	res.send("Success");
+});
+
+app.post('/api/saveProfile',function(req,res){
+	console.log(req.body);
+	db.profile.update({UUID: req.body.UUID},{
+		$pull: {"domains": {"type": req.body.typeOld, "name": req.body.nameOld}},
+	},{
+		multi: true
+	});
+	
+	res.send("Success");
+});
+
