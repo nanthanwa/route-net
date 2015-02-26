@@ -82,15 +82,25 @@ app.get('/api/nodeMark',function(req,res){
 app.post('/api/shareNode',function(req,res){
 	console.log(req.body);
 
-	/*db.node.insert((req.body),function(err,data){		
-		//res.send(data);
-	});*/
+	//save new node in table node
+	db.node.remove({UUID:req.body.UUID})
+	db.node.insert({req.body})
+
 	db.pos.remove({UUID:req.body.UUID})
-	db.pos.insert({UUID:req.body.UUID,
+	db.pos.insert({
+		UUID:req.body.UUID,
 		timestamp:req.body.timestamp,
-					domain:[{type:req.body.domain.type,name:req.body.domain.name,value:80}]},function(err,data){  //can use $push to insert indatabase
-						console.log(data)
-					})
+		domains:[
+				{
+					type:req.body.domains.type,
+					name:req.body.domains.name,
+					value:70
+				}
+			]
+		},
+		function(err,data){  //can use $push to insert indatabase
+			console.log(data)
+	})
 
 	res.send(req.body);
 
@@ -171,7 +181,7 @@ function timeStampTime(){
 		
 		timestamp= new Date().getTime();		
 		console.log(timestamp)
-	},20000);
+	},10000);
 }
 
 
@@ -295,4 +305,28 @@ app.post('/api/getProfile',function(req,res){
 	db.profile.find(req.body,function(err,node){   //query database		
 		res.send(node); 
 	});  
+});
+
+
+app.post('/api/removeFav',function(req,res){
+	console.log(req.body.UUID);
+	//var domains = db.profile.findOne({"UUID": req.body.UUID}).domains;
+	// domains.splice(req.body.index, 1);  
+	// db.profile.update({"UUID": req.body.UUID}, {"$set" : {"domains" : domains}});
+});
+
+
+app.post('/api/lookingfor',function(req,res){
+
+	console.log(req.body);
+	db.master.find({$and:[{'pos.name':req.body.lookingfor},{'node.loc':{$near:{
+		type:"Point",
+		coordinates:[req.body.loc.coordinates[0],req.body.loc.coordinates[1]]
+	},
+	$maxDistance:1000
+
+	}}]},function(err,node){
+	console.log(node)
+	res.send(node);	
+	});	
 });
