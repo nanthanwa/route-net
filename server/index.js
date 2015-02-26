@@ -82,15 +82,25 @@ app.get('/api/nodeMark',function(req,res){
 app.post('/api/shareNode',function(req,res){
 	console.log(req.body);
 
-	/*db.node.insert((req.body),function(err,data){		
-		//res.send(data);
-	});*/
+	//save new node in table node
+	db.node.remove({UUID:req.body.UUID})
+	//db.node.insert({req.body})
+
 	db.pos.remove({UUID:req.body.UUID})
-	db.pos.insert({UUID:req.body.UUID,
+	db.pos.insert({
+		UUID:req.body.UUID,
 		timestamp:req.body.timestamp,
-					domain:[{type:req.body.domain.type,name:req.body.domain.name,value:80}]},function(err,data){  //can use $push to insert indatabase
-						console.log(data)
-					})
+		domains:[
+				{
+					type:req.body.domains.type,
+					name:req.body.domains.name,
+					value:70
+				}
+			]
+		},
+		function(err,data){  //can use $push to insert indatabase
+			console.log(data)
+	})
 
 	res.send(req.body);
 
@@ -295,4 +305,53 @@ app.post('/api/getProfile',function(req,res){
 	db.profile.find(req.body,function(err,node){   //query database		
 		res.send(node); 
 	});  
+});
+
+
+app.post('/api/removeFav',function(req,res){
+	//console.log(req.body);
+	db.profile.update({UUID : req.body.UUID}, {
+		$pull : {"domains" : {"name": req.body.name, "type": req.body.type}}
+	});
+});
+
+
+app.post('/api/lookingfor',function(req,res){
+
+	console.log(req.body);
+	db.master.find({$and:[{'pos.name':req.body.lookingfor},{'node.loc':{$near:{
+		type:"Point",
+		coordinates:[req.body.loc.coordinates[0],req.body.loc.coordinates[1]]
+	},
+	$maxDistance:1000
+
+	}}]},function(err,node){
+	console.log(node)
+	res.send(node);	
+	});	
+});
+
+app.post('/api/saveProfile',function(req,res){
+	//console.log(req.body);
+	db.profile.find({UUID: req.body.UUID},function(err, node){
+		console.log(node[0].domains[req.body.index]);
+		node[0].domains[req.body.index].type = req.body.type;
+		node[0].domains[req.body.index].name = req.body.name;
+		db.profile.update({UUID: req.body.UUID},{
+			$set: {domains: node[0].domains}
+		});
+	});
+	
+	res.send("Success");
+});
+
+app.post('/api/saveProfile',function(req,res){
+	console.log(req.body);
+	db.profile.update({UUID: req.body.UUID},{
+		$pull: {"domains": {"type": req.body.typeOld, "name": req.body.nameOld}},
+	},{
+		multi: true
+	});
+	
+	res.send("Success");
 });

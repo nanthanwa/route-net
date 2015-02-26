@@ -35,44 +35,72 @@
 <script id="modal-favorite" type="text/ng-template">
   <ion-modal-view>
     <ion-header-bar class="bar-positive">
+    <div class="buttons">
+        <button class="button button-icon icon ion-ios-minus-outline"
+          ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+      </div>
+      <h1 class="title">Ionic Delete/Option Buttons</h1>
       <h1 class="title">Edit Favorites</h1>
-      <button class="button ion-close-round" ng-click="closeModal()"></button>
+      <button class="button" ng-click="closeModal()">Done</button>
     </ion-header-bar>
     <ion-content>
 
-      <div class="card" ng-repeat="(index , item) in object">
+        <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
 
-      <div class="item item-divider">
-          #{{$index+1}} <button style="float: right" class="button button-small button-assertive" ng-click="removeCard($index)">X</button></div>
-      
+        <ion-item ng-repeat="item in object" 
+                  item="item"
+                  href="#/item/{{item}}" class="item-remove-animate">
+          สายรถ {{ item.name }}
+          <ion-delete-button class="ion-minus-circled" 
+                             ng-click="onItemDelete(item)">
+          </ion-delete-button>
+          <ion-option-button class="button-assertive"
+                             ng-click="edit(item, $index)">
+            Edit
+          </ion-option-button>
+        </ion-item>
 
-        <div class="item item-text-wrap">
-          <ul class="list">
-            <li class="item">
-              <label class="item item-input item-select">
-                <div class="input-label">
-                  ประเภทรถ
-                </div>
-                <select ng-model="model.type[$index]">
-                  <option ng-selected="item.type==='bus'" value="bus">Bus</option>
-                  <option ng-selected="item.type==='tour'" value="tour">Tour</option>
-                </select>
-              </label>
-            </li>
-            <li class="item">
-              <div class="list">
-                <label class="item item-input ">
-                <div class="input-label">
-                    สายรถ
-                  </div>
-                  <input type="text" min="0" ng-model="item.name">
-                </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </ion-list>
 
-      <button class="button button-full button-balanced" ng-click="saveModal()">Save</button>
+    </ion-content>
+  </ion-modal-view>
+</script>
+
+<script id="modal-edit" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-positive">
+      <h1 class="title">Edit {{model.nameIns}}</h1>
+      <button class="button" ng-click="closeModal2()">Done</button>
+    </ion-header-bar>
+    <ion-content>
+
+              <div class="card">
+            
+              <div class="item item-text-wrap">
+                <ul class="list">
+                  <li class="item">
+                    <label class="item item-input item-select">
+                      <div class="input-label">
+                        ประเภทรถ
+                      </div>
+                      <select ng-model="model.typeIns">
+                        <option ng-selected="model.type==='bus'" value="bus">Bus</option>
+                        <option ng-selected="model.type==='tour'" value="tour">Tour</option>
+                      </select>
+                    </label>
+                  </li>
+                  <li class="item">
+                    <div class="list">
+                      <label class="item item-input ">
+                      <div class="input-label">
+                          สายรถ
+                        </div>
+                        <input type="text" min="0" ng-model="model.nameIns">
+                      </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
     </ion-content>
   </ion-modal-view>
