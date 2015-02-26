@@ -14,7 +14,7 @@ $scope.model.status = "Idle";
 
 
 var interval;
-
+var intervalfind;
 
   getProfile();
 
@@ -200,6 +200,7 @@ var interval;
         refreshNode();
         //console.log(data);
         });
+
       }
     )};
 
@@ -228,6 +229,7 @@ var interval;
       $scope.model.status = "Idle";
       $interval.cancel(interval);
       $interval.cancel(intervalfind);
+    
     }
 
     $scope.find = function(){
