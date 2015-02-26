@@ -84,7 +84,7 @@ app.post('/api/shareNode',function(req,res){
 
 	//save new node in table node
 	db.node.remove({UUID:req.body.UUID})
-	db.node.insert({req.body})
+	db.node.insert(req.body)
 
 	db.pos.remove({UUID:req.body.UUID})
 	db.pos.insert({
@@ -94,7 +94,7 @@ app.post('/api/shareNode',function(req,res){
 				{
 					type:req.body.domains.type,
 					name:req.body.domains.name,
-					value:70
+					value:80
 				}
 			]
 		},
@@ -233,7 +233,7 @@ function updateValue(nodes){
 					,name:node[0].domains[j].name};
 
 			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$elemMatch:data}}]},{$inc:{"domains.$.value":0.05}},{multi:true})
-			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$not:{$elemMatch:data}}}]},{$push:{domains:data}},{multi:true})
+			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$not:{$elemMatch:data}}}]},{$push:{domains:data}},{multi:true})  //learn
 			}
 		})			
 	}
@@ -252,7 +252,7 @@ function updateValue(nodes){
 					,name:node[0].domains[j].name};
 
 			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$elemMatch:data}}]},{$inc:{"domains.$.value":0.05}},{multi:true})
-			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$not:{$elemMatch:data}}}]},{$push:{domains:data}},{multi:true})
+			db.pos.update({$and:[{UUID:{$in:UUID_list}},{domains:{$not:{$elemMatch:data}}}]},{$push:{domains:data}},{multi:true})  //learn
 			}
 		})		
 	}
